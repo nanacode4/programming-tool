@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Coding from "./pages/Coding"; 
 import Navbar from "./components/Navbar"; 
 import Footer from "./components/Footer"; 
+import Dashboard from "./pages/Dashboard";
+import LearningPath from "./pages/LearningPath";
 
 function App() {
   
@@ -16,6 +18,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/coding" element={<Coding />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/learningPath" element={<LearningPath />} />
       </Routes>
       <Footer />
     </Router>

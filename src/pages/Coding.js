@@ -18,7 +18,12 @@ const Coding = () => {
       });
 
       const result = await response.json();
-      setOutput(result.output || result.error);
+      
+      if (result.error) {
+        setOutput(`Error:\n${result.error}`);  // show wrong code
+      } else {
+        setOutput(`Output:\n${result.output}`);  // show correct output
+      }
     } catch (error) {
       console.error("Error running code:", error);
       setOutput("Failed to connect to server");
@@ -31,7 +36,7 @@ const Coding = () => {
         Coding Page
       </Typography>
       
-      {/*select language */}
+      {/* Choose a programming language */}
       <Select
         value={language}
         onChange={(e) => {
@@ -51,6 +56,7 @@ const Coding = () => {
         <MenuItem value="cpp">C++</MenuItem>
       </Select>
 
+      {/* Code Editor */}
       <Box sx={{ border: "1px solid #ccc", borderRadius: "5px", overflow: "hidden" }}>
         <Editor
           height="400px"
@@ -61,6 +67,7 @@ const Coding = () => {
         />
       </Box>
 
+      {/* Run Button */}
       <Button 
         variant="contained" 
         color="primary" 
@@ -70,9 +77,15 @@ const Coding = () => {
         Run Code
       </Button>
 
+      {/* Output Box*/}
       <Paper elevation={3} sx={{ mt: 3, p: 2, backgroundColor: "#f5f5f5" }}>
-        <Typography variant="h6">Output:</Typography>
-        <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>{output}</Typography>
+        {/* <Typography variant="h6">Output:</Typography> */}
+        <Typography 
+          variant="body1" 
+          sx={{ whiteSpace: "pre-wrap", color: output.startsWith("Error:") ? "red" : "black" }}
+        >
+          {output}
+        </Typography>
       </Paper>
     </Container>
   );
