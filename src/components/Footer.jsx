@@ -10,7 +10,7 @@ const Footer = () => {
         color: "white",
         textAlign: "center",
         p: 2,
-        mt: 5,
+        mt: 80,
       }}
     >
       <Typography variant="body2">
