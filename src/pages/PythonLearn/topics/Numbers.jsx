@@ -1,64 +1,58 @@
-import { Typography, Paper, Box } from "@mui/material";
+import { Typography, Paper, Box } from '@mui/material';
+import CodeBlock from '../../../components/theme/CodeBlock';
 
-const Number = () => {
+const Numbers = () => {
   return (
     <Paper sx={{ padding: 3 }}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>
         Python Number
       </Typography>
       <Typography>
-        In Python, numbers are one of the most commonly used data types. There
-        are three main types of numeric data:int, float, complex.
+        In Python, numbers are one of the most commonly used data types. There are three main types of numeric data:int, float, complex.
       </Typography>
+
       <Typography variant="h5" fontWeight="bold" gutterBottom mt={1}>
-        {" "}
         Int
       </Typography>
-      <Typography>
-        Int, or integer, is a whole number, positive or negative, without
-        decimals, of unlimited length.
-      </Typography>
-      <Box component="pre" sx={{ background: "#eee", p: 2, borderRadius: 1 }}>
-        {`a = 10\nb = -25\nc = 10000000000\nprint(type(a))  # <class 'int'>`}
-      </Box>
+      <Typography>Int, or integer, is a whole number, positive or negative, without decimals, of unlimited length.</Typography>
+      <CodeBlock>{`a = 10
+b = -25
+c = 10000000000
+print(type(a))     # <class 'int'>`}</CodeBlock>
+
       <Typography variant="h5" fontWeight="bold" gutterBottom mt={1}>
         Float
       </Typography>
       <Typography>
-        Float, or floating point number is a number, positive or negative,
-        containing one or more decimals. Float can also be scientific numbers
-        with an "e" to indicate the power of 10.
+        Float, or floating point number is a number, positive or negative, containing one or more decimals. Float can also be scientific numbers with
+        an "e" to indicate the power of 10.
       </Typography>
-      <Box component="pre" sx={{ background: "#eee", p: 2, borderRadius: 1 }}>
-        {`price = 99.99\npi = 3.14159\nsci = 1.2e3  # 1200.0\nprint(type(price))  # <class 'float'>`}
-      </Box>
+      <CodeBlock>{`price = 99.99
+pi = 3.14159
+sci = 1.2e3         # 1200.0
+print(type(price))  # <class 'float'>`}</CodeBlock>
+
       <Typography variant="h5" fontWeight="bold" gutterBottom mt={1}>
         Complex
       </Typography>
-      <Typography>
-        Written as real + imaginary part (e.g. 2 + 3j). j is the imaginary unit
-        in Python
+      <Typography>Written as real + imaginary part (e.g. 2 + 3j). j is the imaginary unit in Python</Typography>
+      <CodeBlock>{`z = 2 + 3j
+print(type(z))      # <class 'complex'>`}</CodeBlock>
+
+      <Typography variant="h5" fontWeight="bold" gutterBottom mt={1}>
+        Type Conversion
       </Typography>
-      <Box component="pre" sx={{ background: "#eee", p: 2, borderRadius: 1 }}>
-        {`z = 2 + 3j\nprint(type(z))        # <class 'complex'>`}
-      </Box>
-      <Typography
-        variant="h5"
-        fontWeight="bold"
-        gutterBottom
-        mt={1}
-      ></Typography>
-      <Typography>
-        You can convert from one type to another with the int(), float(), and
-        complex() methods:
-      </Typography>
-      <Box component="pre" sx={{ background: "#eee", p: 2, borderRadius: 1 }}>
-        {`x = 5        # int\ny = float(x) # 5.0\nz = int(3.9) # 3\n\nprint(type(y))  # <class 'float'>\nprint(z)        # 3`}
-      </Box>
-      <Typography>
-        Note: You cannot convert complex numbers into another number type.
-      </Typography>
+      <Typography>You can convert from one type to another with the int(), float(), and complex() methods:</Typography>
+      <CodeBlock>
+        {`x = 5               # int
+y = float(x)        # 5.0
+z = int(3.9)        # 3
+      
+print(type(y))      # <class 'float'>
+print(z)            # 3`}
+      </CodeBlock>
+      <Typography>Note: You cannot convert complex numbers into another number type.</Typography>
     </Paper>
   );
 };
-export default Number;
+export default Numbers;
