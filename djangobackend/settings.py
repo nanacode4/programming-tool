@@ -43,6 +43,9 @@ INSTALLED_APPS = [
      'code_runner',
      'dashboard',
      'learning_path',
+     'accounts',
+     'quiz',
+
 
 
 
@@ -86,10 +89,18 @@ WSGI_APPLICATION = 'djangobackend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tool',
+        'USER': 'root',
+        'PASSWORD': 'cscscs61B1234',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
     }
 }
+
 
 
 # Password validation

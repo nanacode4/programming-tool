@@ -2,6 +2,12 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import subprocess
 import os
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+import io
+import sys
+import  traceback
 
 @api_view(['POST'])
 def run_code(request):
@@ -61,3 +67,90 @@ def run_code(request):
 
     except Exception as e:
         return Response({"error": str(e)}, status=500)
+
+
+
+#  练习验证 API（用于 Python 变量练习）
+@api_view(['POST'])
+def validate_exercise(request):
+    code = request.data.get("code", "")
+    old_stdout = sys.stdout
+    redirected_output = sys.stdout = io.StringIO()
+
+    feedback = []
+    test_passed = True
+
+    try:
+        exec_env = {}
+        exec(code, exec_env)
+
+        # 1. Variable existence and type checking
+        for var_name, expected_type in [("name", str), ("age", int), ("height", float)]:
+            if var_name not in exec_env:
+                feedback.append({
+                    "message": f"Variable '{var_name}' is missing.",
+                    "success": False
+                })
+                test_passed = False
+            elif not isinstance(exec_env[var_name], expected_type):
+                actual_type = type(exec_env[var_name]).__name__
+                feedback.append({
+                    "message": f"Variable '{var_name}' should be {expected_type.__name__}, but got {actual_type}.",
+                    "success": False
+                })
+                test_passed = False
+            else:
+                feedback.append({
+                    "message": f"Variable '{var_name}' is of correct type {expected_type.__name__}.",
+                    "success": True
+                })
+
+        # 2. Check the output
+        output = redirected_output.getvalue().strip()
+        expected_phrase = "My name is"
+        if expected_phrase not in output:
+            feedback.append({
+                "message": f"Output should include phrase: '{expected_phrase}'.",
+                "success": False
+            })
+            test_passed = False
+        else:
+            feedback.append({
+                "message": f"Output contains required phrase: '{expected_phrase}'.",
+                "success": True
+            })
+
+        # 3. Check if the variable value appears in the output
+        for var_name in ["name", "age", "height"]:
+            if var_name in exec_env:
+                if str(exec_env[var_name]) not in output:
+                    feedback.append({
+                        "message": f"Value of '{var_name}' not found in output.",
+                        "success": False
+                    })
+                    test_passed = False
+                else:
+                    feedback.append({
+                        "message": f"Output includes value of '{var_name}'.",
+                        "success": True
+                    })
+
+        return Response({
+            "success": test_passed,
+            "results": feedback
+        }, status=status.HTTP_200_OK)
+
+    except Exception:
+        sys.stdout = old_stdout
+        error_trace = traceback.format_exc()
+        return Response({
+            "success": False,
+            "results": [
+                {
+                    "message": "Runtime error:\n" + error_trace,
+                    "success": False
+                }
+            ]
+        }, status=status.HTTP_400_BAD_REQUEST)
+    finally:
+        sys.stdout = old_stdout
