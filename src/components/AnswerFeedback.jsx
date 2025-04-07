@@ -5,7 +5,7 @@ const AnswerFeedback = ({ isCorrect, correctText, onNext, onTryAgain }) => {
   return (
     <Paper
       sx={{
-        backgroundColor: isCorrect ? "#4caf50" : "#c62828",
+        backgroundColor: isCorrect ? "#2e7d31" : "#c62828",
         color: "#fff",
         p: 5,
         borderRadius: 3,

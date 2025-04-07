@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
 import Home from "./pages/Home";
 import Coding from "./pages/Coding"; 
 import Navbar from "./components/Navbar"; 
 import Footer from "./components/Footer"; 
+import Progress from "./pages/Progress";
 import Dashboard from "./pages/Dashboard";
-import LearningPath from "./pages/LearningPath";
-import PythonLearn from "./pages/PythonLearn/PythonLearn";
+import PythonRoutes from "./routes/PythonRoutes";
+import Login from "./pages/Login";
 
 
 
@@ -20,9 +20,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/coding" element={<Coding />} />
+          <Route path="/progress" element={<Progress />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/learningPath" element={<LearningPath />} />
-          <Route path="/python" element={<PythonLearn />} />
+          <Route path="/python/*" element={<PythonRoutes />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
         <Footer />
       </Router>

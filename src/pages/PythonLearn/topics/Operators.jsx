@@ -2,6 +2,7 @@ import { Paper, Box, Typography } from '@mui/material';
 import CustomTable from '../../../components/CustomTable';
 import CodeBlock from '../../../components/theme/CodeBlock';
 import QuizGroup from '../../../components/QuizGroup';
+import PaginationNav from './../../../components/PaginationNav';
 
 const Operators = () => {
   const columns1 = [
@@ -86,7 +87,7 @@ const Operators = () => {
   ];
 
   return (
-    <Paper sx={{ padding: 3 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold">
         Python Operators
       </Typography>
@@ -179,6 +180,7 @@ print("red" in colors)  # True`}</CodeBlock>
 
       {/* quiz part */}
       <QuizGroup category="operator" />
+      <PaginationNav />
     </Paper>
   );
 };

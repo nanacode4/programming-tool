@@ -1,137 +1,84 @@
-import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Typography,
-  Grid,
-  Paper,
-  LinearProgress,
-  Avatar,
-  Box,
-  Button,
-} from "@mui/material";
-import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { Grid, Typography, Divider } from '@mui/material';
+import CourseCard from './../components/CourseCard';
+import { useNavigate } from 'react-router-dom';
+
+const courses = [
+  {
+    title: 'Introduction to Python',
+    level: 'Beginner',
+    progress: 4,
+    image: require('./../assets/images/python.png'),
+  },
+  {
+    title: 'Introduction to SQL',
+    level: 'Beginner',
+    progress: 0,
+    image: require('./../assets/images/sql.jpg'),
+  },
+  {
+    title: 'Java',
+    level: 'Beginner',
+    progress: 0,
+    image: require('./../assets/images/java.png'),
+  },
+  {
+    title: 'Java Script',
+    level: 'Beginner',
+    progress: 0,
+    image: require('./../assets/images/js1.jpg'),
+  },
+  {
+    title: 'HTML',
+    level: 'Beginner',
+    progress: 0,
+    image: require('./../assets/images/html_five.jpeg'),
+  },
+  {
+    title: 'React',
+    level: 'Beginner',
+    progress: 0,
+    image: require('./../assets/images/react.png'),
+  },
+  {
+    title: 'C++',
+    level: 'Beginner',
+    progress: 0,
+    image: require('./../assets/images/c.png'),
+  },
+  {
+    title: 'c#',
+    level: 'Beginner',
+    progress: 0,
+    image: require('./../assets/images/cc.png'),
+  },
+];
 
 const Dashboard = () => {
-  const [modules, setModules] = useState([]);
-  const [achievements, setAchievements] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/dashboard/")
-      .then((response) => response.json())
-      .then((data) => {
-        setModules(data.modules);
-        setAchievements(data.achievements);
-      })
-      .catch((error) => console.error("Error fetching dashboard data:", error));
-  }, []);
-
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
   return (
-    <Container maxWidth="lg" sx={{ mt: 5 }}>
-      <Typography variant="h3" color="primary" gutterBottom>
-        Learning Dashboard
-      </Typography>
-
-      <Grid container spacing={4}>
-        {/* Row 1: Modules Progress & Achievements */}
-        <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 3, textAlign: "left" }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>
-              Your Progress
-            </Typography>
-            {modules.map((module, index) => (
-              <Box key={index} sx={{ mb: 2 }}>
-                <Typography variant="subtitle1">{module.name}</Typography>
-                <LinearProgress
-                  variant="determinate"
-                  value={module.progress}
-                  sx={{ height: 8, borderRadius: 5 }}
-                />
-              </Box>
-            ))}
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 3, textAlign: "left" }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>
-              Achievements
-            </Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-              {achievements.map((achieve, index) => (
-                <Avatar
-                  key={index}
-                  sx={{ width: 60, height: 60, bgcolor: "gold" }}
-                >
-                  🏆
-                </Avatar>
-              ))}
-            </Box>
-          </Paper>
-        </Grid>
-
-        {/* Row 2: Goals & Overall Progress */}
-        <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 3, textAlign: "left" }}>
-            <Typography variant="h5" sx={{ mb: 1 }}>
-              Goals
-            </Typography>
-            <Typography variant="body1">
-              Complete all modules to earn your certification! 🎓
-            </Typography>
-            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-              View Courses
-            </Button>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 3, textAlign: "left" }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>
-              Overall Progress
-            </Typography>
-            <PieChart width={250} height={250}>
-              <Pie
-                data={modules}
-                dataKey="progress"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill="#8884d8"
-                label
-              >
-                {modules.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </Paper>
-        </Grid>
-      </Grid>
-
-      {/* Add button to navigate to Learning Path */}
+    <Grid container spacing={3} padding={3} mt={2} ml={3}>
       <Grid item xs={12}>
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => navigate("/learningPath")}
-          >
-            Explore Learning Path
-          </Button>
-        </Box>
+        <Typography variant="h4" fontWeight="bold">Dashboard</Typography>
+        <Divider sx={{ my: 1, borderBottomWidth: 2 }} />
       </Grid>
-    </Container>
+
+      {courses.map((course, idx) => (
+        <Grid item key={idx}>
+          <CourseCard
+            course={course}
+            onClick={() => {
+              if (course.title === 'Introduction to Python') {
+                navigate('/python');
+              }
+            }}
+          />
+        </Grid>
+      ))}
+    </Grid>
   );
 };
+
 
 export default Dashboard;

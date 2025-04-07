@@ -1,10 +1,11 @@
 import { Typography, Paper } from '@mui/material';
 import CodeBlock from '../../../components/theme/CodeBlock';
 import QuizGroup from '../../../components/QuizGroup';
+import PaginationNav from './../../../components/PaginationNav';
 
 const Dictionaries = () => {
   return (
-    <Paper sx={{ padding: 3 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold" mb={1}>
         Python Dictionaries
       </Typography>
@@ -68,6 +69,7 @@ del student["email"]
 student.clear()`}</CodeBlock>
       {/* quiz part */}
       <QuizGroup category="dict" />
+      <PaginationNav />
     </Paper>
   );
 };

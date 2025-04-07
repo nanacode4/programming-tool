@@ -1,10 +1,11 @@
 import { Typography, Paper } from '@mui/material';
 import CodeBlock from '../../../components/theme/CodeBlock';
+import PaginationNav from './../../../components/PaginationNav';
 
 const IfElse = () => {
   return (
-    <Paper sx={{ padding: 3 }}>
-      <Typography variant="h4" fontWeight="bold"  mb={2}>
+    <Paper sx={{ padding: 6 }}>
+      <Typography variant="h4" fontWeight="bold" mb={2}>
         Python If ... Else
       </Typography>
       <Typography>
@@ -47,6 +48,7 @@ elif temperature > 20:
     print("Warm")
 else:
     print("Cold")`}</CodeBlock>
+      <PaginationNav />
     </Paper>
   );
 };

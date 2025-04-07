@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Container, Typography, Button, Box, Paper, Grid, MenuItem, Select, TextField } from '@mui/material';
 import Editor from '@monaco-editor/react';
+import ReactMarkdown from 'react-markdown';
+import CodeBlockWithCopy from './../components/CodeBlockWithCopy'
+
+
 
 const Coding = () => {
   const [code, setCode] = useState(`print("Hello, world!")`);
@@ -25,7 +29,10 @@ const Coding = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ inputs: question }),
+        body: JSON.stringify({
+          code: code,
+          language: language,
+        }),
       });
 
       const result = await response.json();
@@ -123,9 +130,22 @@ const Coding = () => {
             {loading ? '...' : 'Submit a question'}
           </Button>
           <Paper elevation={3} sx={{ mt: 3, p: 2, backgroundColor: '#f5f5f5' }}>
-            <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
-              {aiResponse || ' '}
-            </Typography>
+            <ReactMarkdown
+              children={aiResponse}
+              components={{
+                code({ node, inline, className, children, ...props }) {
+                  const match = /language-(\w+)/.exec(className || '');
+                  const codeStr = String(children).replace(/\n$/, '');
+                  return !inline && match ? (
+                    <CodeBlockWithCopy language={match[1]} value={codeStr} />
+                  ) : (
+                    <code className={className} {...props}>
+                      {children}
+                    </code>
+                  );
+                },
+              }}
+            />
           </Paper>
         </Grid>
       </Grid>

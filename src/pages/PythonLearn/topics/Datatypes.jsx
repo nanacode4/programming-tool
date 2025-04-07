@@ -1,12 +1,12 @@
 import { Typography, Paper, Box } from '@mui/material';
 import QuizGroup from '../../../components/QuizGroup';
-import { quizQuestions } from '../../../data/quizQuestions';
 import CodeBlock from '../../../components/theme/CodeBlock';
+import PaginationNav from './../../../components/PaginationNav';
 
 const DataTypes = () => {
-  const datatypeQuestions = quizQuestions.filter((q) => q.type === 'datatype');
+  
   return (
-    <Paper sx={{ padding: 2 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold" mb={1}>
         Python Data type
       </Typography>
@@ -118,6 +118,7 @@ x = int(20)`}
 
       {/* quiz part */}
       <QuizGroup category="datatype" />
+      <PaginationNav/>
     </Paper>
   );
 };

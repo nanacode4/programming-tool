@@ -1,14 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Box, Typography, Paper } from "@mui/material";
-import FillBlankQuestion from "./FillBlankQuestion";
-import { quizQuestions } from "../data/quizQuestions";
 import MultipleQuestion from "./MultipleQuestion";
+import FillBlankQuestion from "./FillBlankQuestion";
 import DragQuestion from "./DragQuestion";
 
+const ensureArray = (v) => {
+  if (Array.isArray(v)) return v;
+  if (v === null || v === undefined) return [];
+  if (typeof v === "string") {
+    try {
+      const parsed = JSON.parse(v);
+      return Array.isArray(parsed) ? parsed : [parsed];
+    } catch {
+      return [v];
+    }
+  }
+  return [v];
+};
+
+const normalizeQuestion = (item) => {
+  const q = item.data;
+  return {
+    id: item.id,
+    kind: item.kind,
+    category: q.category || "",
+    question: q.question || "",
+    codeParts: ensureArray(q.codeParts || q.code_parts),
+    answer: ensureArray(q.answer),
+    options: ensureArray(q.options),
+  };
+};
+
 const QuizGroup = ({ category }) => {
-  const questions = quizQuestions.filter((q) => q.category === category);
+  const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completed, setCompleted] = useState(false);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/api/quiz/");
+        const all = res.data.map(normalizeQuestion);
+        // console.log("all question：", all);
+        const filtered = all.filter((q) => q.category === category);
+        setQuestions(filtered);
+      } catch (err) {
+        console.error("error:", err);
+      }
+    };
+    fetchQuestions();
+  }, [category]);
 
   const handleNext = () => {
     if (currentIndex + 1 < questions.length) {
@@ -28,7 +70,7 @@ const QuizGroup = ({ category }) => {
         return <DragQuestion question={question} onNext={handleNext} />;
       default:
         return (
-          <Typography>Unsupported question type: {question.kind}</Typography>
+          <Typography color="error">null: {question.kind}</Typography>
         );
     }
   };
@@ -39,7 +81,9 @@ const QuizGroup = ({ category }) => {
         Practice Quiz: {category.charAt(0).toUpperCase() + category.slice(1)}
       </Typography>
 
-      {completed ? (
+      {questions.length === 0 ? (
+        <Typography>Loading questions...</Typography>
+      ) : completed ? (
         <Paper
           sx={{
             backgroundColor: "#4caf50",
@@ -51,7 +95,7 @@ const QuizGroup = ({ category }) => {
             maxWidth: "600px",
           }}
         >
-          <Typography variant="h4">🎉 Great job!</Typography>
+          <Typography variant="h4">🎉 Well done!</Typography>
           <Typography variant="h6">
             You completed all {category} questions!
           </Typography>

@@ -1,9 +1,10 @@
 import { Typography, Paper, Box } from '@mui/material';
 import CodeBlock from '../../../components/theme/CodeBlock';
+import PaginationNav from './../../../components/PaginationNav';
 
 const Strings = () => {
   return (
-    <Paper sx={{ padding: 3 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>
         Python Strings
       </Typography>
@@ -36,6 +37,7 @@ print(type(z))        # <class 'complex'>`}</CodeBlock>
       <Typography>You can convert from one type to another with the int(), float(), and complex() methods:</Typography>
       <CodeBlock>{`print("My name is {} and I am {}.".format(name, age))`}</CodeBlock>
       <Typography>Note: You cannot change a string once it’s created.</Typography>
+      <PaginationNav />
     </Paper>
   );
 };

@@ -1,10 +1,11 @@
 import { Typography, Paper } from '@mui/material';
 import CodeBlock from '../../../components/theme/CodeBlock';
 import QuizGroup from '../../../components/QuizGroup';
+import PaginationNav from './../../../components/PaginationNav';
 
 const Sets = () => {
   return (
-    <Paper sx={{ padding: 3 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold" mb={1}>
         Python Sets
       </Typography>
@@ -53,6 +54,7 @@ fruits.pop()
 fruits.clear()`}</CodeBlock>
       {/* quiz part */}
       <QuizGroup category="set" />
+      <PaginationNav />
     </Paper>
   );
 };

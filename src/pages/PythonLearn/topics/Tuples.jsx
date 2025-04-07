@@ -1,9 +1,10 @@
 import { Typography, Paper, Box } from '@mui/material';
 import CodeBlock from '../../../components/theme/CodeBlock';
+import PaginationNav from './../../../components/PaginationNav';
 
 const Tuples = () => {
   return (
-    <Paper sx={{ padding: 3 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold" mb={1}>
         Python Tuples
       </Typography>
@@ -50,6 +51,7 @@ print(t[-1])    # c
       <CodeBlock>{`nums = (10, 20, 30, 40)
 print(nums[1:3])  # (20, 30)
 `}</CodeBlock>
+      <PaginationNav />
     </Paper>
   );
 };

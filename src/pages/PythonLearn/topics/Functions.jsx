@@ -1,10 +1,11 @@
 import { Typography, Paper } from '@mui/material';
 import CodeBlock from '../../../components/theme/CodeBlock';
 import QuizGroup from '../../../components/QuizGroup';
+import PaginationNav from './../../../components/PaginationNav';
 
 const Functions = () => {
   return (
-    <Paper sx={{ padding: 3 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold" mb={1}>
         Python Functions
       </Typography>
@@ -45,6 +46,7 @@ result = add(5, 3)
 print(result)  # 8`}</CodeBlock>
       {/* quiz part */}
       <QuizGroup category="function" />
+      <PaginationNav />
     </Paper>
   );
 };

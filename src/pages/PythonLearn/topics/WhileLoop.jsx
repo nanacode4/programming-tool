@@ -1,9 +1,10 @@
 import { Typography, Paper } from '@mui/material';
 import CodeBlock from '../../../components/theme/CodeBlock';
+import PaginationNav from './../../../components/PaginationNav';
 
 const WhileLoop = () => {
   return (
-    <Paper sx={{ padding: 3 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold" mb={1}>
         Python While Loop
       </Typography>
@@ -39,6 +40,7 @@ while i < 5:
     if i == 3:
         continue
     print(i)`}</CodeBlock>
+    <PaginationNav/>
     </Paper>
   );
 };

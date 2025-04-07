@@ -1,10 +1,11 @@
 import { Typography, Paper, Box } from '@mui/material';
 import CodeBlock from '../../../components/theme/CodeBlock';
 import QuizGroup from '../../../components/QuizGroup';
+import PaginationNav from './../../../components/PaginationNav';
 
 const Booleans = () => {
   return (
-    <Paper sx={{ padding: 3 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold">
         Python Booleans
       </Typography>
@@ -50,6 +51,7 @@ bool(0)`}
 
       {/* quiz part */}
       <QuizGroup category="boolean" />
+      <PaginationNav />
     </Paper>
   );
 };

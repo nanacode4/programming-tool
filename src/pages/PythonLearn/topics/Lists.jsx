@@ -1,10 +1,11 @@
 import { Typography, Paper, Box, Link } from '@mui/material';
 import CodeBlock from '../../../components/theme/CodeBlock';
 import QuizGroup from '../../../components/QuizGroup';
+import PaginationNav from './../../../components/PaginationNav';
 
 const Lists = () => {
   return (
-    <Paper sx={{ padding: 3 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold" mb={1}>
         Python Lists
       </Typography>
@@ -83,8 +84,9 @@ print(nums[1:4])   # [20, 30, 40]
 print(nums[:3])    # [10, 20, 30]
 print(nums[-2:])   # [40, 50]
 `}</CodeBlock>
-{/* quiz part */}
-<QuizGroup category="list" />.
+      {/* quiz part */}
+      <QuizGroup category="list" />
+      <PaginationNav />
     </Paper>
   );
 };

@@ -1,35 +1,28 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Typography,
-  Paper,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-} from "@mui/material";
-import AnswerFeedback from "./AnswerFeedback";
+import React, { useEffect, useState } from 'react';
+import { Box, Button, Typography, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import AnswerFeedback from './AnswerFeedback';
 
 const MultipleQuestion = ({ question, onNext }) => {
-  const [selected, setSelected] = useState("");
+  const { options = [], answer = [] } = question;
+
+  const [selected, setSelected] = useState('');
   const [hasAnswered, setHasAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
 
   useEffect(() => {
-    setSelected("");
+    setSelected('');
     setHasAnswered(false);
     setIsCorrect(false);
   }, [question]);
 
   const handleSubmit = () => {
-    setIsCorrect(selected === question.answer);
+    const correct = selected.trim() === answer[0]?.trim();
+    setIsCorrect(correct);
     setHasAnswered(true);
   };
 
-  const handleTryAgain = () => {
-    setSelected("");
-    setHasAnswered(false);
-    setIsCorrect(false);
+  const handleChange = (event) => {
+    setSelected(event.target.value);
   };
 
   return (
@@ -40,24 +33,13 @@ const MultipleQuestion = ({ question, onNext }) => {
 
       {!hasAnswered ? (
         <>
-          <RadioGroup
-            value={selected}
-            onChange={(e) => setSelected(e.target.value)}
-            sx={{ mt: 2, maxWidth: "600px" }}
-          >
-            {question.options.map((opt, i) => (
+          <RadioGroup value={selected} onChange={handleChange}>
+            {options.map((opt, index) => (
               <FormControlLabel
-                key={i}
+                key={index}
                 value={opt}
                 control={<Radio />}
                 label={opt}
-                sx={{
-                  backgroundColor: "#444",
-                  color: "#fff",
-                  borderRadius: 1,
-                  my: 1,
-                  px: 2,
-                }}
               />
             ))}
           </RadioGroup>
@@ -75,9 +57,8 @@ const MultipleQuestion = ({ question, onNext }) => {
       ) : (
         <AnswerFeedback
           isCorrect={isCorrect}
-          correctText={!isCorrect ? `Correct answer:\n${question.answer}` : ""}
+          correctText={!isCorrect ? `Correct answer: ${answer[0]}` : ''}
           onNext={onNext}
-          onTryAgain={handleTryAgain}
         />
       )}
     </Box>

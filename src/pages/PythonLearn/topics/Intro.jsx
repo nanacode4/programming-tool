@@ -1,9 +1,10 @@
 import { Typography, Paper, Box, Link } from '@mui/material';
 import CodeBlock from '../../../components/theme/CodeBlock';
+import PaginationNav from './../../../components/PaginationNav';
 
 const Intro = () => {
   return (
-    <Paper sx={{ padding: 3 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>
         Python Introduction
       </Typography>
@@ -93,6 +94,7 @@ const Intro = () => {
         {`# This is a comment 
 print("Hello, World!")`}
       </CodeBlock>
+      <PaginationNav />
     </Paper>
   );
 };

@@ -1,9 +1,10 @@
 import { Typography, Paper, Box } from '@mui/material';
 import CodeBlock from '../../../components/theme/CodeBlock';
+import PaginationNav from './../../../components/PaginationNav';
 
 const Numbers = () => {
   return (
-    <Paper sx={{ padding: 3 }}>
+    <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>
         Python Number
       </Typography>
@@ -52,6 +53,7 @@ print(type(y))      # <class 'float'>
 print(z)            # 3`}
       </CodeBlock>
       <Typography>Note: You cannot convert complex numbers into another number type.</Typography>
+      <PaginationNav />
     </Paper>
   );
 };
