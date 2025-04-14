@@ -1,7 +1,7 @@
 import { Typography, Paper, Box } from '@mui/material';
-import CodeBlock from '../../../components/theme/CodeBlock';
-import PaginationNav from './../../../components/PaginationNav';
-
+import CodeBlock from '../../../components/ui/CodeBlock';
+import PaginationNav from './../../../components/layout/PaginationNav';
+import QuizGroup from '../../../components/quiz/QuizGroup';
 const Strings = () => {
   return (
     <Paper sx={{ padding: 6 }}>
@@ -37,6 +37,8 @@ print(type(z))        # <class 'complex'>`}</CodeBlock>
       <Typography>You can convert from one type to another with the int(), float(), and complex() methods:</Typography>
       <CodeBlock>{`print("My name is {} and I am {}.".format(name, age))`}</CodeBlock>
       <Typography>Note: You cannot change a string once it’s created.</Typography>
+      {/* quiz part */}
+      <QuizGroup category="strings" />
       <PaginationNav />
     </Paper>
   );

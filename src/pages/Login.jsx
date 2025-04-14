@@ -23,7 +23,8 @@ const Login = () => {
 
     if (response.ok) {
       console.log('Login successful:', data);
-      navigate('/dashboard');
+      localStorage.setItem('username', username);
+      navigate('/progress');
     } else {
       alert(data.error || 'error');
     }
@@ -45,7 +46,7 @@ const Login = () => {
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit}>
-          <TextField label="Username" variant="outlined" fullWidth margin="normal" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <TextField label="Username" variant="outlined" fullWidth autoComplete="off"  margin="normal" value={username} onChange={(e) => setUsername(e.target.value)} />
           <TextField
             label="Password"
             type="password"

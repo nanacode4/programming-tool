@@ -1,8 +1,8 @@
 import { Paper, Box, Typography } from '@mui/material';
-import CustomTable from '../../../components/CustomTable';
-import CodeBlock from '../../../components/theme/CodeBlock';
-import QuizGroup from '../../../components/QuizGroup';
-import PaginationNav from './../../../components/PaginationNav';
+import CustomTable from '../../../components/ui/CustomTable';
+import CodeBlock from '../../../components/ui/CodeBlock';
+import QuizGroup from '../../../components/quiz/QuizGroup';
+import PaginationNav from './../../../components/layout/PaginationNav';
 
 const Operators = () => {
   const columns1 = [

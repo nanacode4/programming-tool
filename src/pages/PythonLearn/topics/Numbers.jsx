@@ -1,6 +1,7 @@
 import { Typography, Paper, Box } from '@mui/material';
-import CodeBlock from '../../../components/theme/CodeBlock';
-import PaginationNav from './../../../components/PaginationNav';
+import CodeBlock from '../../../components/ui/CodeBlock';
+import PaginationNav from './../../../components/layout/PaginationNav';
+import QuizGroup from '../../../components/quiz/QuizGroup';
 
 const Numbers = () => {
   return (
@@ -53,6 +54,8 @@ print(type(y))      # <class 'float'>
 print(z)            # 3`}
       </CodeBlock>
       <Typography>Note: You cannot convert complex numbers into another number type.</Typography>
+      {/* quiz part */}
+      <QuizGroup category="numbers" />
       <PaginationNav />
     </Paper>
   );

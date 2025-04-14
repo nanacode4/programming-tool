@@ -1,17 +1,17 @@
 import React from 'react';
 import { Grid, Typography, Divider } from '@mui/material';
-import CourseCard from './../components/CourseCard';
+import CourseCard from './../components/ui/CourseCard';
 import { useNavigate } from 'react-router-dom';
 
 const courses = [
   {
-    title: 'Introduction to Python',
+    title: 'Python',
     level: 'Beginner',
     progress: 4,
     image: require('./../assets/images/python.png'),
   },
   {
-    title: 'Introduction to SQL',
+    title: 'SQL',
     level: 'Beginner',
     progress: 0,
     image: require('./../assets/images/sql.jpg'),
@@ -69,7 +69,7 @@ const Dashboard = () => {
           <CourseCard
             course={course}
             onClick={() => {
-              if (course.title === 'Introduction to Python') {
+              if (course.title === 'Python') {
                 navigate('/python');
               }
             }}

@@ -1,6 +1,7 @@
 import { Typography, Paper, Box } from '@mui/material';
-import CodeBlock from '../../../components/theme/CodeBlock';
-import PaginationNav from './../../../components/PaginationNav';
+import CodeBlock from '../../../components/ui/CodeBlock';
+import PaginationNav from './../../../components/layout/PaginationNav';
+import QuizGroup from '../../../components/quiz/QuizGroup';
 
 const Tuples = () => {
   return (
@@ -51,6 +52,8 @@ print(t[-1])    # c
       <CodeBlock>{`nums = (10, 20, 30, 40)
 print(nums[1:3])  # (20, 30)
 `}</CodeBlock>
+      {/* quiz part */}
+      <QuizGroup category="tuples" />
       <PaginationNav />
     </Paper>
   );

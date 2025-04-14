@@ -24,6 +24,11 @@ const MultipleQuestion = ({ question, onNext }) => {
   const handleChange = (event) => {
     setSelected(event.target.value);
   };
+  const handleTryAgain = () => {
+    setSelected('');
+    setHasAnswered(false);
+    setIsCorrect(false);
+  };
 
   return (
     <Box mt={2}>
@@ -35,22 +40,11 @@ const MultipleQuestion = ({ question, onNext }) => {
         <>
           <RadioGroup value={selected} onChange={handleChange}>
             {options.map((opt, index) => (
-              <FormControlLabel
-                key={index}
-                value={opt}
-                control={<Radio />}
-                label={opt}
-              />
+              <FormControlLabel key={index} value={opt} control={<Radio />} label={opt} />
             ))}
           </RadioGroup>
 
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handleSubmit}
-            disabled={!selected}
-            sx={{ mt: 2 }}
-          >
+          <Button variant="contained" color="success" onClick={handleSubmit} disabled={!selected} sx={{ mt: 2 }}>
             Submit Answer
           </Button>
         </>
@@ -59,6 +53,7 @@ const MultipleQuestion = ({ question, onNext }) => {
           isCorrect={isCorrect}
           correctText={!isCorrect ? `Correct answer: ${answer[0]}` : ''}
           onNext={onNext}
+          onTryAgain={handleTryAgain}
         />
       )}
     </Box>

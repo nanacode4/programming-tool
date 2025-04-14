@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Typography, Paper, Box, Button } from '@mui/material';
 import axios from 'axios';
-import QuizGroup from '../../../components/QuizGroup';
+import QuizGroup from '../../../components/quiz/QuizGroup';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/theme-monokai';
-import CodeBlock from '../../../components/theme/CodeBlock';
-import PaginationNav from './../../../components/PaginationNav';
+import CodeBlock from '../../../components/ui/CodeBlock';
+import PaginationNav from './../../../components/layout/PaginationNav';
 
 const Variables = () => {
   const [code, setCode] = useState('');
@@ -22,10 +22,7 @@ const Variables = () => {
       setFeedback([{ message: 'Error validating code.', success: false }]);
     }
   };
-  
-  
 
-  
   return (
     <Paper sx={{ padding: 6 }}>
       <Typography variant="h4" fontWeight="bold" mb={2}>
@@ -174,7 +171,7 @@ x = 'John'`}</CodeBlock>
 
       {/* quiz part */}
       <QuizGroup category="variable" />
-      <PaginationNav/>
+      <PaginationNav />
     </Paper>
   );
 };

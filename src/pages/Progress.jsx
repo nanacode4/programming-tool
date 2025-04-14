@@ -1,136 +1,113 @@
-import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Typography,
-  Grid,
-  Paper,
-  LinearProgress,
-  Avatar,
-  Box,
-  Button,
-} from "@mui/material";
-import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Grid, Button, Box, Typography, Paper, Avatar, LinearProgress, Stack, CircularProgress } from '@mui/material';
+import user from './../assets/images/user.jpeg';
 
 const Progress = () => {
-  const [modules, setModules] = useState([]);
-  const [achievements, setAchievements] = useState([]);
+  const username = localStorage.getItem('username');
+  const [data, setData] = useState([]);
+  const userCourses = data.filter((item) => item.username === username);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/dashboard/")
-      .then((response) => response.json())
+    if (!username) {
+      navigate('/login');
+    }
+  }, [username, navigate]);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/learning-path/usercourses/')
+      .then((res) => res.json())
       .then((data) => {
-        setModules(data.modules);
-        setAchievements(data.achievements);
+        setData(data);
       })
-      .catch((error) => console.error("Error fetching dashboard data:", error));
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
   }, []);
 
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
   return (
-    <Container maxWidth="lg" sx={{ mt: 5 }}>
-      <Typography variant="h3" color="primary" gutterBottom>
-        Learning Dashboard
-      </Typography>
-
-      <Grid container spacing={4}>
-        {/* Row 1: Modules Progress & Achievements */}
-        <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 3, textAlign: "left" }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>
-              Your Progress
+    <>
+      <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
+        {/* User avatar and name */}
+        <Paper sx={{ p: 3, display: 'flex', alignItems: 'center', mb: 4, position: 'relative' }}>
+          <Avatar src={user} sx={{ width: 100, height: 100, mr: 3 }} />
+          <Box>
+            <Typography variant="h4" fontWeight="bold">
+              {username}
             </Typography>
-            {modules.map((module, index) => (
-              <Box key={index} sx={{ mb: 2 }}>
-                <Typography variant="subtitle1">{module.name}</Typography>
-                <LinearProgress
-                  variant="determinate"
-                  value={module.progress}
-                  sx={{ height: 8, borderRadius: 5 }}
-                />
-              </Box>
-            ))}
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 3, textAlign: "left" }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>
-              Achievements
-            </Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
-              {achievements.map((achieve, index) => (
-                <Avatar
-                  key={index}
-                  sx={{ width: 60, height: 60, bgcolor: "gold" }}
-                >
-                  🏆
-                </Avatar>
-              ))}
-            </Box>
-          </Paper>
-        </Grid>
-
-        {/* Row 2: Goals & Overall Progress */}
-        <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 3, textAlign: "left" }}>
-            <Typography variant="h5" sx={{ mb: 1 }}>
-              Goals
-            </Typography>
-            <Typography variant="body1">
-              Complete all modules to earn your certification! 🎓
-            </Typography>
-            <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-              View Courses
-            </Button>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 3, textAlign: "left" }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>
-              Overall Progress
-            </Typography>
-            <PieChart width={250} height={250}>
-              <Pie
-                data={modules}
-                dataKey="progress"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill="#8884d8"
-                label
-              >
-                {modules.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </Paper>
-        </Grid>
-      </Grid>
-
-      {/* Add button to navigate to Learning Path */}
-      <Grid item xs={12}>
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+            <Typography variant="h6">{username}@gmail.com</Typography>
+            <Typography variant="h6">Student at University of Galway~</Typography>
+          </Box>
           <Button
             variant="contained"
             color="primary"
-            onClick={() => navigate("/learningPath")}
+            sx={{ position: 'absolute', top: 56, right: 36 }}
+            onClick={() => {
+              localStorage.removeItem('username');
+              navigate('/login');
+            }}
           >
-            Explore Learning Path
+            Logout
           </Button>
-        </Box>
-      </Grid>
-    </Container>
+        </Paper>
+
+        {/* Course Progress */}
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ p: 3 }}>
+              <Typography variant="h5" gutterBottom>
+                Course Progress
+              </Typography>
+              <Stack spacing={3}>
+                {userCourses.map((course, index) => (
+                  <Box key={index}>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      {course.course} &nbsp;
+                    </Typography>
+                    <LinearProgress
+                      variant="determinate"
+                      value={course.level || 0}
+                      sx={{
+                        height: 10,
+                        borderRadius: 5,
+                        mt: 1,
+                        backgroundColor: '#e0e0e0',
+                        '& .MuiLinearProgress-bar': {
+                          backgroundColor: '#373d38',
+                        },
+                      }}
+                    />
+                    <Typography variant="body2" align="right" mt={0.5}>
+                      {course.level}%
+                    </Typography>
+                  </Box>
+                ))}
+              </Stack>
+              <Box sx={{ display: 'flex', justifyContent: 'left', mt: 2, mb: 2 }}>
+                <Button variant="contained" color="primary" onClick={() => navigate('/dashboard')}>
+                  Browse Courses
+                </Button>
+              </Box>
+            </Paper>
+          </Grid>
+          {/* quiz part */}
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ p: 3 }}>
+              <Typography variant="h5" gutterBottom>
+                Quiz
+              </Typography>
+              <Typography variant="h6">You don't have any saved quiz yet</Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'left', mt: 2, mb: 2 }}>
+                <Button variant="contained" color="primary" onClick={() => navigate('/dashboard')}>
+                  Add new
+                </Button>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
+    </>
   );
 };
 

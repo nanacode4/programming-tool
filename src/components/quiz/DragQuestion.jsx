@@ -68,9 +68,11 @@ const DragQuestion = ({ question, onNext }) => {
     return result;
   };
 
-  const correctText = codeParts.map((part, idx) => {
-    return part + (correctAnswers[idx] !== undefined ? correctAnswers[idx] : '');
-  }).join('');
+  const correctText = codeParts
+    .map((part, idx) => {
+      return part + (correctAnswers[idx] !== undefined ? correctAnswers[idx] : '');
+    })
+    .join('');
 
   return (
     <Box mt={2}>
@@ -106,24 +108,13 @@ const DragQuestion = ({ question, onNext }) => {
             {allOptions
               .filter((opt) => !selected.includes(opt))
               .map((opt, i) => (
-                <Button
-                  key={i}
-                  variant="outlined"
-                  onClick={() => handleChoiceClick(opt)}
-                  sx={{ m: 1 }}
-                >
+                <Button key={i} variant="outlined" onClick={() => handleChoiceClick(opt)} sx={{ m: 1 }}>
                   {opt}
                 </Button>
               ))}
           </Box>
 
-          <Button
-            variant="contained"
-            color="success"
-            sx={{ mt: 2 }}
-            disabled={selected.length !== correctAnswers.length}
-            onClick={handleSubmit}
-          >
+          <Button variant="contained" color="success" sx={{ mt: 2 }} disabled={selected.length !== correctAnswers.length} onClick={handleSubmit}>
             Submit Answer
           </Button>
         </>

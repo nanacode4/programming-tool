@@ -1,6 +1,6 @@
 import { Typography, Paper, Box, Link } from '@mui/material';
-import CodeBlock from '../../../components/theme/CodeBlock';
-import PaginationNav from './../../../components/PaginationNav';
+import CodeBlock from '../../../components/ui/CodeBlock';
+import PaginationNav from './../../../components/layout/PaginationNav';
 
 const Intro = () => {
   return (

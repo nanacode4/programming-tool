@@ -1,7 +1,7 @@
 import { Typography, Paper } from '@mui/material';
-import CodeBlock from '../../../components/theme/CodeBlock';
-import QuizGroup from '../../../components/QuizGroup';
-import PaginationNav from './../../../components/PaginationNav';
+import CodeBlock from '../../../components/ui/CodeBlock';
+import QuizGroup from '../../../components/quiz/QuizGroup';
+import PaginationNav from './../../../components/layout/PaginationNav';
 
 const Functions = () => {
   return (

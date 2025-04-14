@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { Container, Typography, Button, Box, Paper, Grid, MenuItem, Select, TextField } from '@mui/material';
 import Editor from '@monaco-editor/react';
 import ReactMarkdown from 'react-markdown';
-import CodeBlockWithCopy from './../components/CodeBlockWithCopy'
-
-
+import CodeBlockWithCopy from './../components/ui/CodeBlockWithCopy';
 
 const Coding = () => {
   const [code, setCode] = useState(`print("Hello, world!")`);
@@ -68,7 +66,7 @@ const Coding = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 5 }}>
-      <Typography variant="h3" color="secondary" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Coding Page
       </Typography>
 
@@ -76,6 +74,7 @@ const Coding = () => {
         {/* Left: Code editor */}
         <Grid item xs={12} md={6}>
           <Select
+            size="small"
             value={language}
             onChange={(e) => {
               setLanguage(e.target.value);

@@ -16,9 +16,7 @@ const FillBlankQuestion = ({ question, onNext }) => {
   }, [question]);
 
   const handleSubmit = () => {
-    const correct = answer.every(
-      (ans, i) => (inputs[i] || '').trim() === ans.trim()
-    );
+    const correct = answer.every((ans, i) => (inputs[i] || '').trim() === ans.trim());
     setIsCorrect(correct);
     setHasAnswered(true);
   };

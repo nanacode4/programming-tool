@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, Typography, Button, LinearProgress, Box, Stack, CardMedia } from '@mui/material';
 
-const CourseCard = ({ course , onClick}) => {
+const CourseCard = ({ course, onClick }) => {
   const { title, level, progress, image } = course;
 
   return (
@@ -27,7 +27,7 @@ const CourseCard = ({ course , onClick}) => {
 
         {progress !== undefined ? (
           <>
-            <Box >
+            <Box>
               <LinearProgress variant="determinate" value={progress} />
               <Typography variant="caption">{progress}%</Typography>
             </Box>
@@ -37,11 +37,27 @@ const CourseCard = ({ course , onClick}) => {
 
       <Box sx={{ p: 2 }}>
         {progress !== undefined && progress > 0 ? (
-          <Button variant="contained" color="success" fullWidth onClick={onClick}>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: '#7ca2ca ',
+              color: '#fff',
+            }}
+            fullWidth
+            onClick={onClick}
+          >
             Continue
           </Button>
         ) : (
-          <Button variant="contained" color="success" fullWidth onClick={onClick} >
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: '#7ca2ca',
+              color: '#fff',
+            }}
+            fullWidth
+            onClick={onClick}
+          >
             Start
           </Button>
         )}

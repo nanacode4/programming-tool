@@ -1,22 +1,12 @@
-import React, { useState } from "react";
-import {
-  Container,
-  Typography,
-  Paper,
-  Button,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  Box
-} from "@mui/material";
+import React, { useState } from 'react';
+import { Container, Typography, Paper, Button, Radio, RadioGroup, FormControl, FormControlLabel, Box } from '@mui/material';
 
 const LearningPath = () => {
   const [answers, setAnswers] = useState({
-    experience: "",
-    programming: "",
-    algorithms: "",
-    interest: "",
+    experience: '',
+    programming: '',
+    algorithms: '',
+    interest: '',
   });
 
   const [recommendations, setRecommendations] = useState(null);
@@ -26,14 +16,14 @@ const LearningPath = () => {
   };
 
   const handleSubmit = async () => {
-    const response = await fetch("http://127.0.0.1:8000/api/learning-path/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const response = await fetch('http://127.0.0.1:8000/api/learning-path/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(answers),
     });
 
     const result = await response.json();
-    console.log(result);  // 检查 API 返回的数据
+    console.log(result); 
     setRecommendations(result);
   };
 
@@ -44,30 +34,12 @@ const LearningPath = () => {
       </Typography>
 
       <Paper sx={{ p: 3 }}>
-        <Typography variant="h6">
-          1. Do you have programming experience?
-        </Typography>
+        <Typography variant="h6">1. Do you have programming experience?</Typography>
         <FormControl component="fieldset">
-          <RadioGroup
-            name="experience"
-            value={answers.experience}
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              value="no"
-              control={<Radio />}
-              label="No experience"
-            />
-            <FormControlLabel
-              value="basic"
-              control={<Radio />}
-              label="Basic understanding"
-            />
-            <FormControlLabel
-              value="good"
-              control={<Radio />}
-              label="Proficient in at least one language"
-            />
+          <RadioGroup name="experience" value={answers.experience} onChange={handleChange}>
+            <FormControlLabel value="no" control={<Radio />} label="No experience" />
+            <FormControlLabel value="basic" control={<Radio />} label="Basic understanding" />
+            <FormControlLabel value="good" control={<Radio />} label="Proficient in at least one language" />
           </RadioGroup>
         </FormControl>
 
@@ -75,21 +47,9 @@ const LearningPath = () => {
           2. Can you complete basic tasks (like Python basics)?
         </Typography>
         <FormControl component="fieldset">
-          <RadioGroup
-            name="programming"
-            value={answers.programming}
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              value="no"
-              control={<Radio />}
-              label="No, I need help with basics"
-            />
-            <FormControlLabel
-              value="yes"
-              control={<Radio />}
-              label="Yes, I can write simple programs"
-            />
+          <RadioGroup name="programming" value={answers.programming} onChange={handleChange}>
+            <FormControlLabel value="no" control={<Radio />} label="No, I need help with basics" />
+            <FormControlLabel value="yes" control={<Radio />} label="Yes, I can write simple programs" />
           </RadioGroup>
         </FormControl>
 
@@ -97,26 +57,10 @@ const LearningPath = () => {
           3. Are you familiar with data structures and algorithms?
         </Typography>
         <FormControl component="fieldset">
-          <RadioGroup
-            name="algorithms"
-            value={answers.algorithms}
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              value="no"
-              control={<Radio />}
-              label="Not at all"
-            />
-            <FormControlLabel
-              value="some"
-              control={<Radio />}
-              label="Basic understanding (sorting, searching)"
-            />
-            <FormControlLabel
-              value="advanced"
-              control={<Radio />}
-              label="Advanced knowledge (dynamic programming, graphs)"
-            />
+          <RadioGroup name="algorithms" value={answers.algorithms} onChange={handleChange}>
+            <FormControlLabel value="no" control={<Radio />} label="Not at all" />
+            <FormControlLabel value="some" control={<Radio />} label="Basic understanding (sorting, searching)" />
+            <FormControlLabel value="advanced" control={<Radio />} label="Advanced knowledge (dynamic programming, graphs)" />
           </RadioGroup>
         </FormControl>
 
@@ -124,35 +68,15 @@ const LearningPath = () => {
           4. Are you interested in a specific field?
         </Typography>
         <FormControl component="fieldset">
-          <RadioGroup
-            name="interest"
-            value={answers.interest}
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              value="web"
-              control={<Radio />}
-              label="Web Development"
-            />
-            <FormControlLabel
-              value="ai"
-              control={<Radio />}
-              label="AI & Machine Learning"
-            />
-            <FormControlLabel
-              value="system"
-              control={<Radio />}
-              label="System Design & Architecture"
-            />
-            <FormControlLabel
-              value="none"
-              control={<Radio />}
-              label="Not sure yet"
-            />
+          <RadioGroup name="interest" value={answers.interest} onChange={handleChange}>
+            <FormControlLabel value="web" control={<Radio />} label="Web Development" />
+            <FormControlLabel value="ai" control={<Radio />} label="AI & Machine Learning" />
+            <FormControlLabel value="system" control={<Radio />} label="System Design & Architecture" />
+            <FormControlLabel value="none" control={<Radio />} label="Not sure yet" />
           </RadioGroup>
         </FormControl>
       </Paper>
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
         <Button variant="contained" color="primary" onClick={handleSubmit}>
           Get My Learning Path
         </Button>

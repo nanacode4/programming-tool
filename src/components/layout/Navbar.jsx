@@ -1,8 +1,16 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const username = localStorage.getItem("username");
+
+  const handleLogout = () => {
+    localStorage.removeItem("username");
+    navigate("/login");
+  };
+
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
@@ -13,7 +21,12 @@ const Navbar = () => {
         <Button color="inherit" component={Link} to="/coding">Coding</Button>
         <Button color="inherit" component={Link} to="/progress">Progress</Button>
         <Button color="inherit" component={Link} to="/dashboard">Dashboard</Button>
-        <Button color="inherit" component={Link} to="/login">Login</Button>
+        <Button color="inherit" component={Link} to="/discuss">Discuss</Button>
+        {!username ? (
+          <Button color="inherit" component={Link} to="/login">Login</Button>
+        ) : (
+          <Button color="inherit" onClick={handleLogout}>Logout</Button>
+        )}
       </Toolbar>
     </AppBar>
   );

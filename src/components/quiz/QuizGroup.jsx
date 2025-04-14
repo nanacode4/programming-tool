@@ -86,7 +86,7 @@ const QuizGroup = ({ category }) => {
       ) : completed ? (
         <Paper
           sx={{
-            backgroundColor: "#4caf50",
+            backgroundColor: "#2e7d31",
             color: "#fff",
             p: 5,
             mt: 2,
