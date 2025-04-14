@@ -1,13 +1,10 @@
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
 import subprocess
-import os
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 import io
 import sys
-import  traceback
+import traceback
 
 @api_view(['POST'])
 def run_code(request):
@@ -70,7 +67,7 @@ def run_code(request):
 
 
 
-#  练习验证 API（用于 Python 变量练习）
+#  Practice Validation API (for Python variable practice)
 @api_view(['POST'])
 def validate_exercise(request):
     code = request.data.get("code", "")

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
      'learning_path',
      'accounts',
      'quiz',
+    'discuss',
 
 
 
