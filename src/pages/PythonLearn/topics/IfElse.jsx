@@ -1,24 +1,28 @@
 import CodeBlock from '../../../components/ui/CodeBlock';
 import PaginationNav from './../../../components/layout/PaginationNav';
 import React, { useState } from 'react';
-import { Box, Button, Typography, Alert, Paper } from '@mui/material';
+import { Box, Button, Typography, Alert, Paper, MenuItem, TextField } from '@mui/material';
 import GreyTextField from './../../../components/ui/GreyTextField';
 
 const IfElse = () => {
   const [variable1, setVariable1] = useState('');
   const [variable2, setVariable2] = useState('');
+  const [number1, setNumber1] = useState('');
+  const [number2, setNumber2] = useState('');
+  const [print1, setPrint1] = useState('');
+  const [print2, setPrint2] = useState('');
   const [operate, setOperate] = useState('');
   const [output, setOutput] = useState('');
   const [isError, setIsError] = useState(false);
 
   const handleRun = async () => {
     const code = `
-${variable1} = 4
-${variable2} = 8
+${variable1} = ${number1}
+${variable2} = ${number2}
 if ${variable1} ${operate} ${variable2}:
-    print("Hello")
+   print(${print1})
 else:
-    print("Hi")
+    print(${print2})
 `;
 
     const res = await fetch('http://localhost:8000/api/run/', {
@@ -85,77 +89,77 @@ elif temperature > 20:
 else:
     print("Cold")`}</CodeBlock>
 
-      {/* if else  */}
-      <Box mt={6}>
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
+      {/* if else  - Try it Yourself */}
+      <Box sx={{ p: 2 }}>
+        <Typography variant="h5" fontWeight="bold" gutterBottom mb={1}>
           Try it Yourself
         </Typography>
-
-        {/* x = 4 */}
-        <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
-          <GreyTextField
-            value={variable1}
-            onChange={(e) => setVariable1(e.target.value)}
-            />
-          <Typography>= 4</Typography>
-        </Box>
-
-        {/* y = 8 */}
-        <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
-          <GreyTextField
-            value={variable2}
-            onChange={(e) => setVariable2(e.target.value)}
-             />
-          <Typography>= 8</Typography>
-        </Box>
-        {/* if x > y : */}
-        <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
-          <Typography fontWeight="bold">if</Typography>
-          <GreyTextField
-            value={variable1}
-            onChange={(e) => setVariable1(e.target.value)}
-             />
-          <GreyTextField
-            value={operate}
-            onChange={(e) => setOperate(e.target.value)}
-            />
-          <GreyTextField
-            value={variable2}
-            onChange={(e) => setVariable2(e.target.value)}
-             />
-          <Typography fontWeight="bold">:</Typography>
-        </Box>
-
-        <Box display="flex" alignItems="center" gap={1} mb={2} ml={4}>
-          <Typography>print("Hello")</Typography>
-        </Box>
-        {/* else: print("Hi") */}
-        <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
-          <Typography fontWeight="bold">else:</Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap={1} mb={2} ml={4}>
-          <Typography>print("Hi")</Typography>
-        </Box>
-
-        <Box mb={1}>
-          <Button variant="contained" onClick={handleRun}>
-            Run
-          </Button>
-        </Box>
-
-        {output && (
-          <Box mt={2}>
-            {isError ? (
-              <Alert severity="error">{output}</Alert>
-            ) : (
-              <Box p={2} sx={{ backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
-                <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
-                  {output}
-                </Typography>
-              </Box>
-            )}
+        <Typography variant="h6" gutterBottom mb={2}>
+          Define two variables, assign values, choose a comparison operator, and print one based on the condition.
+        </Typography>
+        <Paper elevation={2} sx={{ p: 2, maxWidth: 700 }}>
+          {/* x =  */}
+          <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
+            <GreyTextField value={variable1} onChange={(e) => setVariable1(e.target.value)} />
+            <Typography> = </Typography>
+            <GreyTextField value={number1} onChange={(e) => setNumber1(e.target.value)} />
           </Box>
-        )}
+
+          {/* y =  */}
+          <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
+            <GreyTextField value={variable2} onChange={(e) => setVariable2(e.target.value)} />
+            <Typography> = </Typography>
+            <GreyTextField value={number2} onChange={(e) => setNumber2(e.target.value)} />
+          </Box>
+          {/* if x > y : */}
+          <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
+            <Typography fontWeight="bold">if   </Typography>
+            <GreyTextField value={variable1} onChange={(e) => setVariable1(e.target.value)} />
+            {/* <GreyTextField value={operate} onChange={(e) => setOperate(e.target.value)} /> */}
+            <TextField select size="small" value={operate} onChange={(e) => setOperate(e.target.value)} sx={{ width: 80 }}>
+              <MenuItem value=">">&gt;</MenuItem>
+              <MenuItem value="<">&lt;</MenuItem>
+              <MenuItem value="==">==</MenuItem>
+              <MenuItem value="!=">!=</MenuItem>
+            </TextField>
+            <GreyTextField value={variable2} onChange={(e) => setVariable2(e.target.value)} />
+            <Typography fontWeight="bold">:</Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gap={1} mb={2} ml={4}>
+            <Typography>print( </Typography>
+            <GreyTextField value={print1} onChange={(e) => setPrint1(e.target.value)} />
+            <Typography> )</Typography>
+          </Box>
+          {/* else: print("xxx") */}
+          <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
+            <Typography fontWeight="bold">else:  </Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gap={1} mb={2} ml={4}>
+            <Typography>print( </Typography>
+            <GreyTextField value={print2} onChange={(e) => setPrint2(e.target.value)} />
+            <Typography> )</Typography>
+          </Box>
+
+          <Box mb={1}>
+            <Button variant="contained" onClick={handleRun}>
+              Run
+            </Button>
+          </Box>
+
+          {output && (
+            <Box mt={2}>
+              {isError ? (
+                <Alert severity="error">{output}</Alert>
+              ) : (
+                <Box p={2} sx={{ backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+                  <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
+                    {output}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          )}
+        </Paper>
       </Box>
 
       <PaginationNav />

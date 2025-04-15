@@ -1,19 +1,26 @@
 import CodeBlock from '../../../components/ui/CodeBlock';
 import PaginationNav from './../../../components/layout/PaginationNav';
 import React, { useState } from 'react';
-import { Box, Button, Typography, Alert, Paper } from '@mui/material';
+import { Box, Button, Typography, Alert, Paper, MenuItem, TextField } from '@mui/material';
 import GreyTextField from './../../../components/ui/GreyTextField';
 import QuizGroup from '../../../components/quiz/QuizGroup';
 
 const WhileLoop = () => {
   const [variable, setVariable] = useState('');
+  const [number1, setNumber1] = useState('');
+  const [number2, setNumber2] = useState('');
+  const [number3, setNumber3] = useState('');
   const [condition, setCondition] = useState('');
   const [printContent, setPrintContent] = useState('');
+  const [operate, setOperate] = useState('');
   const [output, setOutput] = useState('');
   const [isError, setIsError] = useState(false);
 
   const handleRun = async () => {
-    const code = `${variable} = 0\nwhile ${condition}:\n    print(${printContent})\n    ${variable} += 1`;
+    const code = `${variable} = ${number1}
+while ${variable} ${condition} ${number2}:
+    print(${printContent})
+    ${variable} ${operate} ${number3}`;
 
     const res = await fetch('http://localhost:8000/api/run/', {
       method: 'POST',
@@ -71,57 +78,76 @@ while i < 5:
         continue
     print(i)`}</CodeBlock>
 
-      {/* while loop */}
+      {/* while loop  Try it Yourself*/}
       <Box mt={6}>
         <Typography variant="h5" fontWeight="bold" gutterBottom>
           Try it Yourself
         </Typography>
-
-        <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
-          <GreyTextField value={variable} onChange={(e) => setVariable(e.target.value)} />
-          <Typography>= 0</Typography>
-        </Box>
-
-        <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
-          <Typography fontWeight="bold">While</Typography>
-          <GreyTextField value={condition} onChange={(e) => setCondition(e.target.value)} />
-          <Typography fontWeight="bold">:</Typography>
-        </Box>
-
-        {/* print(x)  */}
-        <Box display="flex" alignItems="center" gap={1} mb={2} ml={4}>
-          <Typography>print(</Typography>
-          <GreyTextField value={printContent} onChange={(e) => setPrintContent(e.target.value)} />
-          <Typography>)</Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap={1} mb={2} ml={4}>
-          <GreyTextField value={variable} onChange={(e) => setVariable(e.target.value)} />
-          <Typography>+= 1</Typography>
-        </Box>
-
-        <Box mb={1}>
-          <Button variant="contained" onClick={handleRun}>
-            Run
-          </Button>
-        </Box>
-
-        {output && (
-          <Box mt={2}>
-            {isError ? (
-              <Alert severity="error">{output}</Alert>
-            ) : (
-              <Box p={2} sx={{ backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
-                <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
-                  {output}
-                </Typography>
-              </Box>
-            )}
+        <Typography variant="h6" gutterBottom mb={2}>
+          You can define a variable and use a while loop to repeatedly print and update it until a condition is no longer true.
+        </Typography>
+        <Paper elevation={2} sx={{ p: 2, maxWidth: 700 }}>
+          <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
+            <GreyTextField value={variable} onChange={(e) => setVariable(e.target.value)} />
+            <Typography> = </Typography>
+            <GreyTextField value={number1} onChange={(e) => setNumber1(e.target.value)} />
           </Box>
-        )}
+
+          <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
+            <Typography fontWeight="bold">While </Typography>
+            <GreyTextField value={variable} onChange={(e) => setVariable(e.target.value)} />
+            <TextField select size="small" value={condition} onChange={(e) => setCondition(e.target.value)} sx={{ width: 80 }}>
+              <MenuItem value="<">&lt;</MenuItem>
+              <MenuItem value="<=">&le;</MenuItem>
+              <MenuItem value="==">==</MenuItem>
+              <MenuItem value="!=">!=</MenuItem>
+              <MenuItem value=">">&gt;</MenuItem>
+              <MenuItem value=">=">&ge;</MenuItem>
+            </TextField>
+            <GreyTextField value={number2} onChange={(e) => setNumber2(e.target.value)} />
+            <Typography fontWeight="bold">:</Typography>
+          </Box>
+
+          {/* print(x)  */}
+          <Box display="flex" alignItems="center" gap={1} mb={2} ml={4}>
+            <Typography>print(</Typography>
+            <GreyTextField value={printContent} onChange={(e) => setPrintContent(e.target.value)} />
+            <Typography>)</Typography>
+          </Box>
+          <Box display="flex" alignItems="center" gap={1} mb={2} ml={4}>
+            <GreyTextField value={variable} onChange={(e) => setVariable(e.target.value)} />
+            {/* <GreyTextField value={operate} onChange={(e) => setOperate(e.target.value)} /> */}
+            <TextField select size="small" value={operate} onChange={(e) => setOperate(e.target.value)} sx={{ width: 80 }}>
+              <MenuItem value="+=">+=</MenuItem>
+              <MenuItem value="-=">-=</MenuItem>
+            </TextField>
+            <GreyTextField value={number3} onChange={(e) => setNumber3(e.target.value)} />
+          </Box>
+
+          <Box mb={1}>
+            <Button variant="contained" onClick={handleRun}>
+              Run
+            </Button>
+          </Box>
+
+          {output && (
+            <Box mt={2}>
+              {isError ? (
+                <Alert severity="error">{output}</Alert>
+              ) : (
+                <Box p={2} sx={{ backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+                  <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>
+                    {output}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          )}
+        </Paper>
       </Box>
+
       {/* quiz part */}
       <QuizGroup category="while" />
-
       <PaginationNav />
     </Paper>
   );
