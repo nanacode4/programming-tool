@@ -88,17 +88,27 @@ WSGI_APPLICATION = 'djangobackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'tool',
+#         'USER': 'root',
+#         'PASSWORD': 'cscscs61B1234',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'charset': 'utf8mb4',
+#         },
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tool',
-        'USER': 'root',
-        'PASSWORD': 'cscscs61B1234',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'myprojectdb',       # 替换为你的数据库名
+        'USER': 'postgres',          # 替换为你的用户名
+        'PASSWORD': 'LibraryMS1234!',
         'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
+        'PORT': '5432',
     }
 }
 

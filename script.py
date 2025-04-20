@@ -1,7 +1,5 @@
 
- = 4
- = 8
-if   :
-    print("Hello")
-else:
-    print("Hi")
+def aa():
+    print(1)
+
+aa()
