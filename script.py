@@ -1,5 +1,5 @@
 
-def aa():
+def x():
     print(1)
 
-aa()
+x()
