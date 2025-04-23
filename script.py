@@ -1,5 +1,1 @@
-
-def x():
-    print(1)
-
-x()
+print("Hello, world!")
