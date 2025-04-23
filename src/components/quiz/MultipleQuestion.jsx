@@ -16,7 +16,10 @@ const MultipleQuestion = ({ question, onNext }) => {
   }, [question]);
 
   const handleSubmit = () => {
-    const correct = selected.trim() === answer[0]?.trim();
+    const normalize = (val) =>
+      typeof val === 'string' ? val.trim() : Array.isArray(val) ? val[0]?.toString?.().trim() || '' : val?.toString?.().trim?.() || '';
+
+    const correct = normalize(selected) === normalize(answer);
     setIsCorrect(correct);
     setHasAnswered(true);
   };

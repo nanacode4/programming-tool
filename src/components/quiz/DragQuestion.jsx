@@ -5,7 +5,9 @@ import shuffle from 'lodash.shuffle';
 
 const DragQuestion = ({ question, onNext }) => {
   const correctAnswers = Array.isArray(question.answer) ? question.answer : [];
-  const codeParts = Array.isArray(question.codeParts) ? question.codeParts : [];
+  const codeParts = Array.isArray(question.codeParts || question.code_parts)
+    ? question.codeParts || question.code_parts
+    : [];
   const options = Array.isArray(question.options) ? question.options : [];
 
   const allOptions = shuffle([...new Set([...correctAnswers, ...options])]);
@@ -15,38 +17,41 @@ const DragQuestion = ({ question, onNext }) => {
   const [isCorrect, setIsCorrect] = useState(false);
 
   useEffect(() => {
-    setSelected([]);
+    const inputCount = codeParts.filter((p) => p.input).length;
+    setSelected(Array(inputCount).fill(null));
     setHasAnswered(false);
     setIsCorrect(false);
   }, [question]);
 
   const handleChoiceClick = (choice) => {
-    if (selected.length < correctAnswers.length) {
-      setSelected((prev) => [...prev, choice]);
+    const firstEmpty = selected.findIndex((val) => val === null);
+    if (firstEmpty !== -1) {
+      const updated = [...selected];
+      updated[firstEmpty] = choice;
+      setSelected(updated);
     }
   };
 
   const handleSubmit = () => {
-    const correct = selected.every((val, i) => val === correctAnswers[i]);
+    const correct = correctAnswers.every((ans, i) => selected[i] === ans);
     setIsCorrect(correct);
     setHasAnswered(true);
   };
 
   const handleTryAgain = () => {
-    setSelected([]);
+    setSelected(Array(selected.length).fill(null));
     setHasAnswered(false);
     setIsCorrect(false);
   };
 
-  const renderCodeWithAnswers = () => {
-    const result = [];
-
-    for (let i = 0; i < codeParts.length; i++) {
-      result.push(<span key={`code-${i}`}>{codeParts[i]}</span>);
-      if (i < correctAnswers.length) {
-        result.push(
+  const renderCodeWithInputs = () => {
+    let inputIndex = 0;
+    return codeParts.map((part, idx) => {
+      if (part.input) {
+        const value = selected[inputIndex];
+        const box = (
           <Box
-            key={`input-${i}`}
+            key={idx}
             component="span"
             sx={{
               display: 'inline-block',
@@ -59,19 +64,19 @@ const DragQuestion = ({ question, onNext }) => {
               textAlign: 'center',
             }}
           >
-            {selected[i] || ' '}
+            {value || ' '}
           </Box>
         );
+        inputIndex++;
+        return box;
+      } else {
+        return <span key={idx}>{part.text}</span>;
       }
-    }
-
-    return result;
+    });
   };
 
   const correctText = codeParts
-    .map((part, idx) => {
-      return part + (correctAnswers[idx] !== undefined ? correctAnswers[idx] : '');
-    })
+    .map((part, i) => (part.input ? `[${correctAnswers[i] ?? ''}]` : part.text))
     .join('');
 
   return (
@@ -82,7 +87,6 @@ const DragQuestion = ({ question, onNext }) => {
 
       {!hasAnswered ? (
         <>
-          {/* Code preview with selected answers */}
           <Box
             component="pre"
             sx={{
@@ -100,21 +104,31 @@ const DragQuestion = ({ question, onNext }) => {
               maxWidth: '100%',
             }}
           >
-            {renderCodeWithAnswers()}
+            {renderCodeWithInputs()}
           </Box>
 
-          {/* Option buttons */}
           <Box sx={{ mt: 2 }}>
             {allOptions
               .filter((opt) => !selected.includes(opt))
               .map((opt, i) => (
-                <Button key={i} variant="outlined" onClick={() => handleChoiceClick(opt)} sx={{ m: 1 }}>
+                <Button
+                  key={i}
+                  variant="outlined"
+                  onClick={() => handleChoiceClick(opt)}
+                  sx={{ m: 1 }}
+                >
                   {opt}
                 </Button>
               ))}
           </Box>
 
-          <Button variant="contained" color="success" sx={{ mt: 2 }} disabled={selected.length !== correctAnswers.length} onClick={handleSubmit}>
+          <Button
+            variant="contained"
+            color="success"
+            sx={{ mt: 2 }}
+            disabled={selected.includes(null)}
+            onClick={handleSubmit}
+          >
             Submit Answer
           </Button>
         </>

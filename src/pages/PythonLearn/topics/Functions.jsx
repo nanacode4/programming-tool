@@ -8,7 +8,7 @@ import GreyTextField from './../../../components/ui/GreyTextField';
 const Functions = () => {
   const [func, setFunc] = useState('');
   const [print, setPrint] = useState('');
-  const [retu, setRetu] = useState('');
+  // const [retu, setRetu] = useState('');
   const [call, setCall] = useState('');
   const [output, setOutput] = useState('');
   const [isError, setIsError] = useState(false);

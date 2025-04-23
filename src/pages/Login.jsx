@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -24,6 +23,7 @@ const Login = () => {
     if (response.ok) {
       console.log('Login successful:', data);
       localStorage.setItem('username', username);
+      localStorage.setItem('role', data.role);
       navigate('/progress');
     } else {
       alert(data.error || 'error');

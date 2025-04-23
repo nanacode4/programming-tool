@@ -8,6 +8,8 @@ const Progress = () => {
   const [data, setData] = useState([]);
   const userCourses = data.filter((item) => item.username === username);
   const navigate = useNavigate();
+  const [feedback, setFeedback] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     if (!username) {
@@ -25,6 +27,27 @@ const Progress = () => {
         console.error('Error fetching data:', error);
       });
   }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch('http://127.0.0.1:8000/api/feedback/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        content: feedback,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          setSubmitted(true);
+          setFeedback('');
+        }
+      })
+      .catch((error) => console.error('Error submitting feedback:', error));
+  };
 
   return (
     <>
@@ -91,6 +114,7 @@ const Progress = () => {
               </Box>
             </Paper>
           </Grid>
+
           {/* quiz part */}
           <Grid item xs={12} md={6}>
             <Paper sx={{ p: 3 }}>
@@ -103,6 +127,46 @@ const Progress = () => {
                   Add new
                 </Button>
               </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+
+        {/* feedback part */}
+        <Grid container spacing={1} sx={{ mt: 2 }}>
+          <Grid item xs={12}>
+            <Paper sx={{ p: 3 }}>
+              <Typography variant="h5" gutterBottom>
+                Feedback
+              </Typography>
+              {/* <Typography variant="h6">
+                Got any suggestions or encountered a bug? Let us know!
+              </Typography> */}
+              <Box component="form" onSubmit={handleSubmit}>
+                <textarea
+                  value={feedback}
+                  onChange={(e) => setFeedback(e.target.value)}
+                  rows={4}
+                  style={{
+                    width: '100%',
+                    padding: '8px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    marginBottom: '10px',
+                    fontFamily: 'inherit',
+                    fontSize: '1rem',
+                  }}
+                  placeholder="Enter your feedback here..."
+                  required
+                />
+                <Button variant="contained" color="primary" type="submit">
+                  Submit Feedback
+                </Button>
+              </Box>
+              {submitted && (
+                <Typography variant="body2" color="success.main" mt={2}>
+                  Thank you for your feedback!
+                </Typography>
+              )}
             </Paper>
           </Grid>
         </Grid>

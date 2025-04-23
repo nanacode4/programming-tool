@@ -3,6 +3,7 @@ import PaginationNav from '../../../components/layout/PaginationNav';
 import React, { useState } from 'react';
 import { Box, Button, Typography, Alert, Paper } from '@mui/material';
 import GreyTextField from './../../../components/ui/GreyTextField';
+import QuizGroup from '../../../components/quiz/QuizGroup';
 
 const ForLoop = () => {
   const [variable1, setVariable1] = useState('');
@@ -134,6 +135,8 @@ const ForLoop = () => {
           )}
         </Paper>
       </Box>
+      {/* quiz part */}
+      <QuizGroup category="for" />
 
       <PaginationNav />
     </Paper>
