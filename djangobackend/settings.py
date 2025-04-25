@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
      'rest_framework',
      'corsheaders',
      'code_runner',
@@ -49,9 +48,6 @@ INSTALLED_APPS = [
      'quiz',
     'discuss',
     'feedback',
-
-
-
 
 ]
 
@@ -64,6 +60,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+]
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
 ]
 
 ROOT_URLCONF = 'djangobackend.urls'
@@ -86,34 +85,36 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'djangobackend.wsgi.application'
+AUTH_USER_MODEL = 'accounts.User'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tool',
-        'USER': 'root',
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
-    }
-}
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'myprojectdb',
-#         'USER': 'postgres',
-#         'PASSWORD':
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'tool',
+#         'USER': 'root',
+#         'PASSWORD': config('DB_PASSWORD'),
 #         'HOST': 'localhost',
-#         'PORT': '5432',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'charset': 'utf8mb4',
+#         },
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'tool_db',
+        'USER': 'postgres',
+        'PASSWORD': 'LibraryMS1234!',  #  config('DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 
 
@@ -159,3 +160,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
