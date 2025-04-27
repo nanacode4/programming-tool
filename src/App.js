@@ -15,6 +15,7 @@ import FeedbackPage from './pages/FeedbackPage';
 import Quiz from './pages/quiz/Quiz';
 import SingleQuiz from './pages/quiz/SingleQuiz';
 import AddQuiz from './pages/quiz/AddQuiz.jsx';
+import  WrongAnswerPractice from './pages/WrongAnswerPractice.jsx';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/quizzes" element={<Quiz />} />
         <Route path="/admin/quiz/:id" element={<SingleQuiz />} />
         <Route path="/admin/quiz/add" element={<AddQuiz />} />
+        <Route path="/wrong-practice" element={<WrongAnswerPractice />} />
       </Routes>
       {/* <Footer /> */}
     </Router>

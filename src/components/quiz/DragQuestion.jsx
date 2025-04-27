@@ -3,7 +3,7 @@ import { Box, Button, Typography } from '@mui/material';
 import AnswerFeedback from './AnswerFeedback';
 import shuffle from 'lodash.shuffle';
 
-const DragQuestion = ({ question, onNext }) => {
+const DragQuestion = ({ question, onNext,onAddToReview }) => {
   const correctAnswers = Array.isArray(question.answer) ? question.answer : [];
   const codeParts = Array.isArray(question.codeParts || question.code_parts)
     ? question.codeParts || question.code_parts
@@ -138,6 +138,7 @@ const DragQuestion = ({ question, onNext }) => {
           correctText={!isCorrect ? `Correct answer:\n${correctText}` : ''}
           onNext={onNext}
           onTryAgain={handleTryAgain}
+          onAddToReview={onAddToReview}
         />
       )}
     </Box>

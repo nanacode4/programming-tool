@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import AnswerFeedback from './AnswerFeedback';
 
-const MultipleQuestion = ({ question, onNext }) => {
+const MultipleQuestion = ({ question, onNext, onAddToReview }) => {
   const { options = [], answer = [] } = question;
-
   const [selected, setSelected] = useState('');
   const [hasAnswered, setHasAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -17,7 +16,11 @@ const MultipleQuestion = ({ question, onNext }) => {
 
   const handleSubmit = () => {
     const normalize = (val) =>
-      typeof val === 'string' ? val.trim() : Array.isArray(val) ? val[0]?.toString?.().trim() || '' : val?.toString?.().trim?.() || '';
+      typeof val === 'string'
+        ? val.trim()
+        : Array.isArray(val)
+        ? val[0]?.toString?.().trim() || ''
+        : val?.toString?.().trim?.() || '';
 
     const correct = normalize(selected) === normalize(answer);
     setIsCorrect(correct);
@@ -47,7 +50,13 @@ const MultipleQuestion = ({ question, onNext }) => {
             ))}
           </RadioGroup>
 
-          <Button variant="contained" color="success" onClick={handleSubmit} disabled={!selected} sx={{ mt: 2 }}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleSubmit}
+            disabled={!selected}
+            sx={{ mt: 2 }}
+          >
             Submit Answer
           </Button>
         </>
@@ -57,6 +66,7 @@ const MultipleQuestion = ({ question, onNext }) => {
           correctText={!isCorrect ? `Correct answer: ${answer[0]}` : ''}
           onNext={onNext}
           onTryAgain={handleTryAgain}
+          onAddToReview={onAddToReview}
         />
       )}
     </Box>

@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, Checkbox, FormControlLabel, Paper, Link } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+  Paper,
+  Link,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const response = await fetch('http://localhost:8000/api/accounts/login/', {
       method: 'POST',
@@ -19,14 +30,19 @@ const Login = () => {
     });
 
     const data = await response.json();
+    setLoading(false);
 
     if (response.ok) {
       console.log('Login successful:', data);
-      localStorage.setItem('username', username);
+
+      localStorage.setItem('access_token', data.access);
+      localStorage.setItem('refresh_token', data.refresh);
+      localStorage.setItem('username', data.user.username);
       localStorage.setItem('role', data.role);
+      
       navigate('/progress');
     } else {
-      alert(data.error || 'error');
+      alert(data.error || 'Login failed');
     }
   };
 
@@ -46,7 +62,15 @@ const Login = () => {
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit}>
-          <TextField label="Username" variant="outlined" fullWidth autoComplete="off"  margin="normal" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <TextField
+            label="Username"
+            variant="outlined"
+            fullWidth
+            autoComplete="off"
+            margin="normal"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
           <TextField
             label="Password"
             type="password"

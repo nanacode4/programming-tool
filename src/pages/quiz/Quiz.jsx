@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Paper, Divider, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import {
+  Box,
+  Paper,
+  Divider,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@mui/material';
 import { Typography, TextField, Button, Select, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
 
 const Quiz = () => {
   const [allQuizzes, setAllQuizzes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('all');
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const quizzesPerPage = 10;
 
   // Get All quiz
   useEffect(() => {
@@ -31,6 +43,15 @@ const Quiz = () => {
       return q.kind === filter;
     });
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  const paginatedQuizzes = filteredQuizzes.slice(
+    (page - 1) * quizzesPerPage,
+    page * quizzesPerPage
+  );
+
   return (
     <Box sx={{ maxWidth: 1000, mx: 'auto', mt: 5, p: 3 }}>
       <Typography variant="h4" gutterBottom>
@@ -40,7 +61,13 @@ const Quiz = () => {
 
       {/* Search Input */}
       <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-        <TextField fullWidth size="small" placeholder="Search by question..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+        <TextField
+          fullWidth
+          size="small"
+          placeholder="Search by question..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <Button variant="outlined" onClick={() => setSearchTerm('')}>
           Search
         </Button>
@@ -75,19 +102,35 @@ const Quiz = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredQuizzes.map((q, index) => (
-                <TableRow key={q.id} hover sx={{ cursor: 'pointer' }} onClick={() => navigate(`/admin/quiz/${q.id}`)}>
-                  <TableCell>{index + 1}</TableCell> 
+              {paginatedQuizzes.map((q, index) => (
+                <TableRow
+                  key={q.id}
+                  hover
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => navigate(`/admin/quiz/${q.id}`)}
+                >
+                  <TableCell>{(page - 1) * quizzesPerPage + index + 1}</TableCell>
                   <TableCell>{q.data?.question}</TableCell>
                   <TableCell>{q.data?.category}</TableCell>
                   <TableCell>{q.kind}</TableCell>
-                  <TableCell>{Array.isArray(q.data?.answer) ? q.data.answer.join(', ') : q.data?.answer}</TableCell>
+                  <TableCell>
+                    {Array.isArray(q.data?.answer) ? q.data.answer.join(', ') : q.data?.answer}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </Paper>
       )}
+
+      <Box display="flex" justifyContent="center" mt={4}>
+        <Pagination
+          count={Math.ceil(filteredQuizzes.length / quizzesPerPage)}
+          page={page}
+          onChange={handlePageChange}
+          color="primary"
+        />
+      </Box>
     </Box>
   );
 };

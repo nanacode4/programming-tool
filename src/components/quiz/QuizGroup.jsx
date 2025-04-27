@@ -5,19 +5,19 @@ import MultipleQuestion from './MultipleQuestion';
 import FillBlankQuestion from './FillBlankQuestion';
 import DragQuestion from './DragQuestion';
 
-const ensureArray = (v) => {
-  if (Array.isArray(v)) return v;
-  if (v === null || v === undefined) return [];
-  if (typeof v === 'string') {
-    try {
-      const parsed = JSON.parse(v);
-      return Array.isArray(parsed) ? parsed : [parsed];
-    } catch {
-      return [v];
-    }
-  }
-  return [v];
-};
+// const ensureArray = (v) => {
+//   if (Array.isArray(v)) return v;
+//   if (v === null || v === undefined) return [];
+//   if (typeof v === 'string') {
+//     try {
+//       const parsed = JSON.parse(v);
+//       return Array.isArray(parsed) ? parsed : [parsed];
+//     } catch {
+//       return [v];
+//     }
+//   }
+//   return [v];
+// };
 
 const normalizeQuestion = (item) => {
   const q = item.data;
@@ -62,13 +62,53 @@ const QuizGroup = ({ category }) => {
   };
 
   const renderQuestionComponent = (question) => {
+    const handleAddToReview = async () => {
+      const username = localStorage.getItem('username');
+      const token = localStorage.getItem('access_token');
+      if (!username) {
+        alert('Please login first.');
+        return;
+      }
+
+      try {
+        await axios.post(
+          'http://localhost:8000/api/quiz/wrong_answers/',
+          {
+            quiz: question.id,
+            username: username,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, 
+            },
+          }
+        );
+      } catch (err) {
+        console.error('Failed to add to review:', err);
+      }
+    };
+
     switch (question.kind) {
       case 'multiple':
-        return <MultipleQuestion question={question} onNext={handleNext} />;
+        return (
+          <MultipleQuestion
+            question={question}
+            onNext={handleNext}
+            onAddToReview={handleAddToReview}
+          />
+        );
       case 'fill':
-        return <FillBlankQuestion question={question} onNext={handleNext} />;
+        return (
+          <FillBlankQuestion
+            question={question}
+            onNext={handleNext}
+            onAddToReview={handleAddToReview}
+          />
+        );
       case 'drag':
-        return <DragQuestion question={question} onNext={handleNext} />;
+        return (
+          <DragQuestion question={question} onNext={handleNext} onAddToReview={handleAddToReview} />
+        );
       default:
         return <Typography color="error">null: {question.kind}</Typography>;
     }

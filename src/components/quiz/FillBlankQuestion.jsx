@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography, TextField } from '@mui/material';
 import AnswerFeedback from './AnswerFeedback';
 
-const FillBlankQuestion = ({ question, onNext }) => {
+const FillBlankQuestion = ({ question, onNext, onAddToReview }) => {
   const { codeParts = [], answer = [] } = question;
 
   const [inputs, setInputs] = useState([]);
@@ -28,9 +28,9 @@ const FillBlankQuestion = ({ question, onNext }) => {
     setIsCorrect(false);
   };
 
-  const correctText = codeParts.map((part, idx) =>
-    part.input ? `[${answer.shift() ?? ''}]` : part.text
-  ).join('');
+  const correctText = codeParts
+    .map((part, idx) => (part.input ? `[${answer.shift() ?? ''}]` : part.text))
+    .join('');
 
   let inputIndex = 0;
 
@@ -105,6 +105,7 @@ const FillBlankQuestion = ({ question, onNext }) => {
           correctText={!isCorrect ? `Correct answer:\n${correctText}` : ''}
           onNext={onNext}
           onTryAgain={handleTryAgain}
+          onAddToReview={onAddToReview}
         />
       )}
     </Box>
