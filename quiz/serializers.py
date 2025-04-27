@@ -4,7 +4,9 @@ from .models import (
     MultipleChoiceQuestion,
     FillInBlankQuestion,
     DragDropQuestion,
+    WrongAnswer
 )
+
 
 
 class MultipleChoiceSerializer(serializers.ModelSerializer):
@@ -43,3 +45,35 @@ class QuizIndexSerializer(serializers.ModelSerializer):
             question = DragDropQuestion.objects.get(id=obj.ref_id)
             return DragDropSerializer(question).data
         return None
+
+
+class WrongAnswerSerializer(serializers.ModelSerializer):
+    quiz = serializers.SerializerMethodField()
+
+    class Meta:
+        model = WrongAnswer
+        fields = ['id', 'user', 'quiz_id', 'quiz', 'added_at']
+
+    def get_quiz(self, obj):
+        try:
+            quiz_index = QuizIndex.objects.get(id=obj.quiz_id)
+            if quiz_index.kind == 'multiple':
+                instance = MultipleChoiceQuestion.objects.get(id=quiz_index.ref_id)
+                data = MultipleChoiceSerializer(instance).data
+            elif quiz_index.kind == 'fill':
+                instance = FillInBlankQuestion.objects.get(id=quiz_index.ref_id)
+                data = FillInBlankSerializer(instance).data
+            elif quiz_index.kind == 'drag':
+                instance = DragDropQuestion.objects.get(id=quiz_index.ref_id)
+                data = DragDropSerializer(instance).data
+            else:
+                return None
+
+            return {
+                "id": quiz_index.id,
+                "kind": quiz_index.kind,
+                "ref_id": quiz_index.ref_id,
+                "data": data
+            }
+        except QuizIndex.DoesNotExist:
+            return None

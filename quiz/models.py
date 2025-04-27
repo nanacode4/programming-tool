@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # question kind
 KIND_CHOICES = [
@@ -59,3 +60,18 @@ class QuizIndex(models.Model):
 
     def __str__(self):
         return f"{self.kind}#{self.ref_id}"
+
+
+
+
+
+class WrongAnswer(models.Model):
+    quiz_id = models.IntegerField()
+    added_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'quiz_id')
+
+    def __str__(self):
+        return f"{self.user.username} - Quiz#{self.quiz_id}"

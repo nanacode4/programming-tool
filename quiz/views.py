@@ -1,18 +1,24 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from .models import QuizIndex, MultipleChoiceQuestion, FillInBlankQuestion, DragDropQuestion
+from .models import WrongAnswer
+from accounts.models import User
 from .serializers import (
-    QuizIndexSerializer,
     MultipleChoiceSerializer,
     FillInBlankSerializer,
     DragDropSerializer,
 )
 from rest_framework import status
-from rest_framework.decorators import api_view
-from django.shortcuts import get_object_or_404
+from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .models import WrongAnswer
+from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from .serializers import WrongAnswerSerializer
 
 @api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
 def all_quiz_questions(request):
     if request.method == 'GET':
         quiz_items = QuizIndex.objects.all()
@@ -71,6 +77,7 @@ def all_quiz_questions(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([AllowAny])
 def quiz_detail(request, pk):
     index = get_object_or_404(QuizIndex, pk=pk)
 
@@ -117,3 +124,40 @@ def quiz_detail(request, pk):
         instance.delete()
         index.delete()
         return Response({'message': 'Quiz deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+
+
+User = get_user_model()
+
+
+
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def wrong_answer_list(request):
+    username = request.data.get("username")
+    quiz_id = request.data.get("quiz")
+
+    if not username or not quiz_id:
+        return Response({"error": "Missing username or quiz ID"}, status=400)
+
+    user = get_object_or_404(User, username=username)
+
+    obj, created = WrongAnswer.objects.get_or_create(user=user, quiz_id=quiz_id)
+
+    if created:
+        return Response({'message': 'Added to review list'})
+    else:
+        return Response({'message': 'Already in review list'})
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def get_wrong_answers(request):
+    user = request.user
+    wrong_answers = WrongAnswer.objects.filter(user=user)
+    serializer = WrongAnswerSerializer(wrong_answers, many=True)
+    return Response(serializer.data)
