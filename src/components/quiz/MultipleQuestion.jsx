@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import AnswerFeedback from './AnswerFeedback';
+import { Box, Button, Typography, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 
 const MultipleQuestion = ({ question, onNext, onAddToReview }) => {
   const { options = [], answer = [] } = question;
@@ -42,25 +42,25 @@ const MultipleQuestion = ({ question, onNext, onAddToReview }) => {
         {question.question}
       </Typography>
 
-      {!hasAnswered ? (
-        <>
-          <RadioGroup value={selected} onChange={handleChange}>
-            {options.map((opt, index) => (
-              <FormControlLabel key={index} value={opt} control={<Radio />} label={opt} />
-            ))}
-          </RadioGroup>
+      <RadioGroup value={selected} onChange={handleChange}>
+        {options.map((opt, index) => (
+          <FormControlLabel key={index} value={opt} control={<Radio />} label={opt} />
+        ))}
+      </RadioGroup>
 
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handleSubmit}
-            disabled={!selected}
-            sx={{ mt: 2 }}
-          >
-            Submit Answer
-          </Button>
-        </>
-      ) : (
+      {!hasAnswered && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
+          disabled={!selected}
+          sx={{ mt: 2 }}
+        >
+          Submit Answer
+        </Button>
+      )}
+
+      {hasAnswered && (
         <AnswerFeedback
           isCorrect={isCorrect}
           correctText={!isCorrect ? `Correct answer: ${answer[0]}` : ''}

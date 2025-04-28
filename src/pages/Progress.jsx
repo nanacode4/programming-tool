@@ -156,7 +156,7 @@ const Progress = () => {
                     color="primary"
                     onClick={() => navigate('/wrong-practice')}
                   >
-                    Practice Wrong Answers
+                    Practice
                   </Button>
                 </>
               ) : (

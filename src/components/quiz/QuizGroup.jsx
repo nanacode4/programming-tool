@@ -5,20 +5,6 @@ import MultipleQuestion from './MultipleQuestion';
 import FillBlankQuestion from './FillBlankQuestion';
 import DragQuestion from './DragQuestion';
 
-// const ensureArray = (v) => {
-//   if (Array.isArray(v)) return v;
-//   if (v === null || v === undefined) return [];
-//   if (typeof v === 'string') {
-//     try {
-//       const parsed = JSON.parse(v);
-//       return Array.isArray(parsed) ? parsed : [parsed];
-//     } catch {
-//       return [v];
-//     }
-//   }
-//   return [v];
-// };
-
 const normalizeQuestion = (item) => {
   const q = item.data;
 

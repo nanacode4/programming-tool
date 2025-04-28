@@ -1,117 +1,144 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Box, Typography, Button, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 import axios from 'axios';
-import { Box, Typography, Button } from '@mui/material';
-import MultipleQuestion from './../components/quiz/MultipleQuestion';
-import FillBlankQuestion from './../components/quiz/FillBlankQuestion';
-import DragQuestion from './../components/quiz/DragQuestion';
-
-
-
-const normalizeQuestion = (item) => {
-  const q = item.quiz;
-  const data = q.data;
-
-  return {
-    id: q.id,
-    kind: q.kind || '',
-    category: data.category || '',
-    question: data.question || '',
-    codeParts: Array.isArray(data.codeParts || data.code_parts) ? data.codeParts || data.code_parts : [],
-    answer: Array.isArray(data.answer) ? data.answer : [data.answer],
-    options: Array.isArray(data.options) ? data.options : [],
-  };
-};
-
 
 const WrongAnswerPractice = () => {
   const [questions, setQuestions] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const navigate = useNavigate();
+  const [statuses, setStatuses] = useState({});
+  const [selectedOptions, setSelectedOptions] = useState({});
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const token = localStorage.getItem('access_token');
       try {
-        const res = await axios.get('http://127.0.0.1:8000/api/quiz/get_wrong_answers/', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
+        const token = localStorage.getItem('access_token');
+        const res = await axios.get('http://localhost:8000/api/quiz/get_wrong_answers/', {
+          headers: { Authorization: `Bearer ${token}` },
         });
-        const normalized = res.data.map(normalizeQuestion);
-        console.log(res.data);
-
+        const normalized = res.data.map((item) => ({
+          id: item.quiz.id,
+          question: item.quiz.data.question,
+          options: item.quiz.data.options,
+          answer: item.quiz.data.answer,
+        }));
         setQuestions(normalized);
       } catch (err) {
         console.error('Failed to fetch wrong answers:', err);
       }
     };
+
     fetchQuestions();
   }, []);
 
-  const handleNext = () => {
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      alert('You have finished all wrong questions!');
-      navigate('/progress');
-    }
+  const handleSubmit = (id) => {
+    const question = questions.find((q) => q.id === id);
+    const selectedOption = selectedOptions[id];
+    if (!selectedOption) return;
+    const isCorrect = question.answer.includes(selectedOption);
+    setStatuses((prev) => ({
+      ...prev,
+      [id]: { hasAnswered: true, isCorrect },
+    }));
   };
 
-  const handleAddToReview = async () => {
-    const username = localStorage.getItem('username');
-    const token = localStorage.getItem('access_token');
-    if (!username) {
-      alert('Please login first.');
-      return;
-    }
+  const handleOptionChange = (id, value) => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
 
+  const handleRemoveFromWrongAnswers = async (id) => {
     try {
-      await axios.post(
-        'http://localhost:8000/api/quiz/wrong_answers/',
-        {
-          quiz: questions[currentIndex].id,
-          username: username,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const token = localStorage.getItem('access_token');
+      await axios.delete(`http://localhost:8000/api/quiz/wrong_answers/${id}/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setQuestions((prev) => prev.filter((q) => q.id !== id));
     } catch (err) {
-      console.error('Failed to add to review:', err);
-    }
-  };
-
-  const renderQuestionComponent = () => {
-    const question = questions[currentIndex];
-    if (!question) return <Typography>Loading...</Typography>;
-
-    const commonProps = {
-      question,
-      onNext: handleNext,
-      onAddToReview: handleAddToReview,
-    };
-
-    switch (question.kind) {
-      case 'multiple':
-        return <MultipleQuestion {...commonProps} />;
-      case 'fill':
-        return <FillBlankQuestion {...commonProps} />;
-      case 'drag':
-        return <DragQuestion {...commonProps} />;
-      default:
-        return <Typography color="error">Unsupported question type: {question.kind}</Typography>;
+      console.error('Failed to remove wrong answer:', err);
     }
   };
 
   return (
-    <Box mt={4}>
+    <Box mt={4} mr={4} ml={6}>
       <Typography variant="h5" fontWeight="bold" gutterBottom>
         Practice Your Wrong Answers
       </Typography>
-      {renderQuestionComponent()}
+
+      {questions.length > 0 ? (
+        questions.map((question) => {
+          const status = statuses[question.id] || { hasAnswered: false, isCorrect: null };
+          return (
+            <Box key={question.id} sx={{ mb: 6 }}>
+              <Typography variant="h6" gutterBottom>
+                {question.question}
+              </Typography>
+              <RadioGroup
+                onChange={(e) => handleOptionChange(question.id, e.target.value)}
+                name={`question-${question.id}`}
+                value={selectedOptions[question.id] || ''}
+              >
+                {question.options.map((option, index) => (
+                  <FormControlLabel
+                    key={index}
+                    value={option}
+                    control={<Radio />}
+                    label={option}
+                  />
+                ))}
+              </RadioGroup>
+
+              {!status.hasAnswered && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleSubmit(question.id)}
+                  disabled={!selectedOptions[question.id]}
+                  sx={{ mt: 2 }}
+                >
+                  Submit
+                </Button>
+              )}
+
+              {status.hasAnswered && (
+                <Box sx={{ mt: 2 }}>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ color: status.isCorrect ? 'green' : 'red', fontWeight: 'bold' }}
+                  >
+                    {status.isCorrect ? 'Correct Answer!' : 'Wrong Answer!'}
+                  </Typography>
+
+                  {status.isCorrect ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleRemoveFromWrongAnswers(question.id)}
+                      sx={{ mt: 1 }}
+                    >
+                      REMOVE 
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setStatuses((prev) => ({
+                        ...prev,
+                        [question.id]: { hasAnswered: false, isCorrect: null },
+                      }))}
+                      sx={{ mt: 1 }}
+                    >
+                      TRY AGAIN
+                    </Button>
+                  )}
+                </Box>
+              )}
+            </Box>
+          );
+        })
+      ) : (
+        <Typography>Loading...</Typography>
+      )}
     </Box>
   );
 };

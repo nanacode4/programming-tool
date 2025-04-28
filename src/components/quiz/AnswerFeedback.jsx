@@ -1,51 +1,54 @@
 import React from 'react';
-import { Paper, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Stack } from '@mui/material';
 
 const AnswerFeedback = ({ isCorrect, correctText, onNext, onTryAgain, onAddToReview }) => {
   return (
-    <Paper
-      sx={{
-        backgroundColor: isCorrect ? '#2e7d31' : '#c62828',
-        color: '#fff',
-        p: 5,
-        borderRadius: 3,
-        mt: 2,
-        textAlign: 'center',
-        maxWidth: '600px',
-      }}
-    >
-      <Typography variant="h4" gutterBottom>
+    <Box sx={{ mt: 3 }}>
+      {/* Correct / Wrong Text */}
+      <Typography
+        variant="h5"
+        sx={{
+          color: isCorrect ? 'black' : 'red',
+          fontWeight: 'bold',
+          mb: 2,
+        }}
+      >
         {isCorrect ? 'Correct Answer!' : 'Wrong Answer!'}
       </Typography>
 
+      {/* Correct answer explanation if wrong */}
       {!isCorrect && correctText && (
         <Typography
+          variant="h5"
           sx={{
-            mt: 1,
+            color: 'text.secondary',
             fontFamily: 'monospace',
             whiteSpace: 'pre-wrap',
+            mb: 2,
           }}
         >
           {correctText}
         </Typography>
       )}
 
-      {/* Primary button: Next question / Redo*/}
-      <Button
-        variant="contained"
-        sx={{ mt: 2, backgroundColor: '#263238' }}
-        onClick={isCorrect ? onNext : onTryAgain}
-      >
-        {isCorrect ? 'Next Question' : 'Try Again'}
-      </Button>
-
-      {/* Wrong button: only displayed when the answer is wrong */}
-      {!isCorrect && onAddToReview && (
-        <Button variant="outlined" color="inherit" sx={{ mt: 2, ml: 2 }} onClick={onAddToReview}>
-          Add to review
+      {/* Buttons */}
+      <Stack direction="row" spacing={2}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={isCorrect ? onNext : onTryAgain}
+        >
+          {isCorrect ? 'Next Question' : 'Try Again'}
         </Button>
-      )}
-    </Paper>
+
+        {/* Only show "Add to Review" if answer is wrong */}
+        {!isCorrect && onAddToReview && (
+          <Button variant="outlined" color="secondary" onClick={onAddToReview}>
+            Add to Review
+          </Button>
+        )}
+      </Stack>
+    </Box>
   );
 };
 
