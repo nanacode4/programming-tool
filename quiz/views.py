@@ -1,21 +1,21 @@
 from .models import QuizIndex, MultipleChoiceQuestion, FillInBlankQuestion, DragDropQuestion
-from .models import WrongAnswer
 from accounts.models import User
 from .serializers import (
     MultipleChoiceSerializer,
     FillInBlankSerializer,
     DragDropSerializer,
 )
-from rest_framework import status
 from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import WrongAnswer
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from .serializers import WrongAnswerSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from .models import WrongAnswer
 
 @api_view(['GET', 'POST'])
 @permission_classes([AllowAny])
@@ -161,3 +161,15 @@ def get_wrong_answers(request):
     wrong_answers = WrongAnswer.objects.filter(user=user)
     serializer = WrongAnswerSerializer(wrong_answers, many=True)
     return Response(serializer.data)
+
+# views.py
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_wrong_answer(request, quiz_id):
+    try:
+        wrong_answer = WrongAnswer.objects.get(quiz_id=quiz_id, user=request.user)
+        wrong_answer.delete()
+        return Response({"detail": "Wrong answer removed."}, status=status.HTTP_204_NO_CONTENT)
+    except WrongAnswer.DoesNotExist:
+        return Response({"error": "Wrong answer not found."}, status=status.HTTP_404_NOT_FOUND)
