@@ -1,52 +1,38 @@
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .models import UserCourse
+from .models import UserCourseProgress
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
-def get_user_courses(request):
-    data = []
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_topic_complete(request):
+    topic = request.data.get('topic')
+    course = request.data.get('course', 'Python')  
 
-    for entry in UserCourse.objects.all():
-        data.append({
-            "username": entry.username,
-            "course": entry.course,
-            "level": entry.level,
-        })
+    if not topic:
+        return Response({'error': 'Topic is required.'}, status=400)
 
-    return JsonResponse(data, safe=False)
+    UserCourseProgress.objects.get_or_create(
+        user=request.user,
+        course=course,
+        topic=topic
+    )
+    return Response({'status': 'recorded', 'topic': topic, 'course': course})
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_course_progress(request):
+    course = request.GET.get('course', 'Python')
+    total_topics = 15 if course == 'Python' else 0
 
+    completed = UserCourseProgress.objects.filter(user=request.user, course=course).count()
+    percentage = round((completed / total_topics) * 100) if total_topics > 0 else 0
 
-
-
-
-
-
-
-# @api_view(['POST'])
-# def learning_path(request):
-#     try:
-#         data = request.data
-#         experience = data.get("experience", "")
-#         programming = data.get("programming", "")
-#         algorithms = data.get("algorithms", "")
-#         interest = data.get("interest", "")
-#
-#         level = "Beginner"
-#         path = "Start with basic computer concepts, Python programming, and computational thinking."
-#
-#         if experience == "basic" or programming == "yes":
-#             level = "Intermediate"
-#             path = "Learn data structures, algorithms, front-end or back-end development, and databases."
-#         elif experience == "good" and algorithms in ["some", "advanced"]:
-#             level = "Advanced"
-#             path = "Explore system design, machine learning, operating systems, and security."
-#
-#         if interest == "web":
-#             path += " Focus on web development (HTML/CSS/JavaScript, Django/Node.js)."
-#         elif interest == "ai":
-#             path += " Focus on AI and machine learning (TensorFlow, PyTorch)."
-#         elif interest == "system":
-#             path += " Focus on system design, architecture, and security."
-#
-#         return Response({"level": level, "path": path})
-#     except Exception as e:
-#         return Response({"error": str(e)}, status=400)
+    return Response({
+        'course': course,
+        'completed': completed,
+        'total': total_topics,
+        'percentage': percentage
+    })
