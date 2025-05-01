@@ -25,6 +25,7 @@ def get_discussions_with_replies(request):
     return JsonResponse(data, safe=False)
 
 
+
 @csrf_exempt
 def add_reply(request, discuss_id):
     if request.method == 'POST':
@@ -36,11 +37,17 @@ def add_reply(request, discuss_id):
             if not replier or not content:
                 return JsonResponse({'error': 'Missing fields'}, status=400)
 
-            discuss = Discuss.objects.get(id=discuss_id)
+            try:
+                discuss = Discuss.objects.get(id=discuss_id)
+            except Discuss.DoesNotExist:
+                return JsonResponse({'error': 'Discussion not found'}, status=404)
+
             Reply.objects.create(discuss=discuss, replier=replier, content=content)
             return JsonResponse({'message': 'Reply added successfully'})
         except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+            return JsonResponse({'error': f'Server error: {str(e)}'}, status=500)
+
+    return JsonResponse({'error': 'Only POST allowed'}, status=405)
 
 @csrf_exempt
 def create_discussion(request):
