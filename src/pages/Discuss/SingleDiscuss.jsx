@@ -87,7 +87,30 @@ const SingleDiscuss = () => {
       <Typography variant="h5" fontWeight="bold" gutterBottom>
         {post.title}
       </Typography>
-      <ReactMarkdown>{post.description}</ReactMarkdown>
+      <ReactMarkdown
+        rehypePlugins={[rehypeRaw]}
+        components={{
+          code({ node, inline, className, children, ...props }) {
+            const match = /language-(\w+)/.exec(className || '');
+            return !inline && match ? (
+              <SyntaxHighlighter
+                children={String(children).replace(/\n$/, '')}
+                style={oneDark}
+                language={match[1]}
+                PreTag="div"
+                {...props}
+              />
+            ) : (
+              <code className={className} {...props}>
+                {children}
+              </code>
+            );
+          },
+        }}
+      >
+        {post.description}
+      </ReactMarkdown>
+
       <Stack direction="row" spacing={1} mb={2} flexWrap="wrap">
         {post.tags.map((tag, i) => (
           <Chip key={i} label={tag} />

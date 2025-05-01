@@ -1,7 +1,8 @@
-import React from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableRow, TableHead, Paper } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Typography, Table, TableBody, TableCell, TableRow, Paper } from '@mui/material';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import { useNavigate } from 'react-router-dom';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import axios from 'axios';
 
 const menuItems = [
   { label: 'Python Introduction', path: 'intro' },
@@ -22,7 +23,64 @@ const menuItems = [
 ];
 
 const PythonLearn = () => {
-  const navigate = useNavigate();
+  const [completedTopics, setCompletedTopics] = useState([]);
+  const token = localStorage.getItem('access_token');
+  axios
+    .get('http://localhost:8000/api/learning-path/user_progress/list/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      const topics = res.data.map((item) => item.topic);
+      setCompletedTopics(topics);
+    })
+    .catch((err) => {
+      console.error('Failed to fetch completed topics:', err);
+    });
+
+  const handleClick = async (topic) => {
+    const token = localStorage.getItem('access_token');
+
+    const isCompleted = completedTopics.includes(topic);
+
+    if (isCompleted) {
+      setCompletedTopics((prev) => prev.filter((t) => t !== topic));
+
+      try {
+        await axios.delete('http://localhost:8000/api/learning-path/user_progress/unmark/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: {
+            topic,
+            course: 'Python',
+          },
+        });
+      } catch (error) {
+        console.error('Failed to unmark topic:', error);
+      }
+    } else {
+      setCompletedTopics((prev) => [...new Set([...prev, topic])]);
+
+      try {
+        await axios.post(
+          'http://localhost:8000/api/learning-path/user_progress/',
+          {
+            topic,
+            course: 'Python',
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.error('Failed to mark topic complete:', error);
+      }
+    }
+  };
 
   return (
     <Box sx={{ maxWidth: '1200px', mx: 'auto', py: 7 }}>
@@ -33,11 +91,25 @@ const PythonLearn = () => {
         <Table>
           <TableBody>
             {menuItems.map((item, index) => (
-              <TableRow hover key={index} onClick={() => navigate(item.path)} sx={{ cursor: 'pointer' }}>
+              <TableRow
+                hover
+                key={index}
+                onClick={() => handleClick(item.path)}
+                sx={{ cursor: 'pointer' }}
+              >
                 <TableCell sx={{ py: 2 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <InsertDriveFileIcon sx={{ color: 'gray', fontSize: 22, mr: 4 }} />
-                    <Typography sx={{ fontSize: '1.5rem', fontWeight: 500 }}>{item.label}</Typography>
+                  <Box
+                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <InsertDriveFileIcon sx={{ color: 'gray', fontSize: 22, mr: 4 }} />
+                      <Typography sx={{ fontSize: '1.5rem', fontWeight: 500 }}>
+                        {item.label}
+                      </Typography>
+                    </Box>
+                    <CheckCircleIcon
+                      sx={{ color: completedTopics.includes(item.path) ? 'green' : 'gray' }}
+                    />
                   </Box>
                 </TableCell>
               </TableRow>

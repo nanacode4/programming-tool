@@ -14,6 +14,7 @@ const Progress = () => {
     const itemUsername = item.username || (item.user && item.user.username);
     return itemUsername === username;
   });
+  const [progress, setProgress] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -23,13 +24,18 @@ const Progress = () => {
   }, [username, navigate]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/learning-path/usercourses/')
+    const token = localStorage.getItem('access_token');
+    fetch('http://127.0.0.1:8000/api/learning-path/user_progress/summary/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
-        setData(data);
+        setProgress(data);
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching progress:', error);
       });
   }, []);
 
@@ -74,8 +80,6 @@ const Progress = () => {
     navigate('/login');
   };
 
-
-
   return (
     <>
       <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
@@ -107,14 +111,14 @@ const Progress = () => {
                 Course Progress
               </Typography>
               <Stack spacing={3}>
-                {userCourses.map((course, index) => (
-                  <Box key={index}>
+                {progress && (
+                  <Box>
                     <Typography variant="subtitle1" fontWeight="bold">
-                      {course.course} &nbsp;
+                      {progress.course}
                     </Typography>
                     <LinearProgress
                       variant="determinate"
-                      value={course.level || 0}
+                      value={progress.percentage}
                       sx={{
                         height: 10,
                         borderRadius: 5,
@@ -126,10 +130,10 @@ const Progress = () => {
                       }}
                     />
                     <Typography variant="body2" align="right" mt={0.5}>
-                      {course.level}%
+                      {progress.percentage}%
                     </Typography>
                   </Box>
-                ))}
+                )}
               </Stack>
               <Box sx={{ display: 'flex', justifyContent: 'left', mt: 2, mb: 2 }}>
                 <Button variant="contained" color="primary" onClick={() => navigate('/dashboard')}>
@@ -143,12 +147,12 @@ const Progress = () => {
           <Grid item xs={12}>
             <Paper sx={{ p: 3, mt: 3 }}>
               <Typography variant="h5" gutterBottom>
-                Wrong Answers
+                Quiz Review
               </Typography>
               {wrongAnswers.length > 0 ? (
                 <>
                   <Typography variant="body1" sx={{ mb: 2 }}>
-                    You have {wrongAnswers.length} wrong questions to practice.
+                    You have {wrongAnswers.length} wrong quizzes to practice.
                   </Typography>
                   <Button
                     variant="contained"
@@ -161,11 +165,11 @@ const Progress = () => {
                 </>
               ) : (
                 <>
-                  <Typography variant="h6"  sx={{ mb: 2 }}>
-                    No wrong answers yet.
+                  <Typography variant="h6" sx={{ mb: 2 }}>
+                    No wrong quizzes yet.
                   </Typography>
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     size="large"
                     color="primary"
                     sx={{ mt: 2 }}
