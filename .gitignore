@@ -17,3 +17,5 @@ db.sqlite3
 
 # Ignore environment variable files
 .env
+# Pytest
+.pytest_cache/
