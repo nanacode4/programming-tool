@@ -7,6 +7,8 @@ import GreyTextField from './../../../components/ui/GreyTextField';
 const IfElse = () => {
   const [variable1, setVariable1] = useState('');
   const [variable2, setVariable2] = useState('');
+  const [variable3, setVariable3] = useState('');
+  const [variable4, setVariable4] = useState('');
   const [number1, setNumber1] = useState('');
   const [number2, setNumber2] = useState('');
   const [print1, setPrint1] = useState('');
@@ -16,14 +18,19 @@ const IfElse = () => {
   const [isError, setIsError] = useState(false);
 
   const handleRun = async () => {
-    const code = `
-${variable1} = ${number1}
-${variable2} = ${number2}
-if ${variable1} ${operate} ${variable2}:
-   print(${print1})
-else:
-    print(${print2})
-`;
+    let code = '';
+
+    if (variable1 && number1) {
+      code += `${variable1} = ${number1}\n`;
+    }
+    if (variable2 && number2) {
+      code += `${variable2} = ${number2}\n`;
+    }
+
+    code += `if ${variable3} ${operate} ${variable4}:\n`;
+    code += `    print(${print1})\n`;
+    code += `else:\n`;
+    code += `    print(${print2})\n`;
 
     const res = await fetch('http://localhost:8000/api/run/', {
       method: 'POST',
@@ -49,7 +56,8 @@ else:
         Python If ... Else
       </Typography>
       <Typography>
-        These are conditional statements that allow your code to make decisions and execute different blocks depending on conditions.
+        These are conditional statements that allow your code to make decisions and execute
+        different blocks depending on conditions.
       </Typography>
 
       <Typography variant="h5" fontWeight="bold" mb={1} mt={1}>
@@ -65,7 +73,8 @@ if age >= 18:
         The elif Statement (else if)
       </Typography>
       <Typography>
-        Used to check another condition if the first one is false.Python checks from top to bottom and stops once a condition is True.
+        Used to check another condition if the first one is false.Python checks from top to bottom
+        and stops once a condition is True.
       </Typography>
       <CodeBlock>{`score = 75
 
@@ -95,7 +104,8 @@ else:
           Try it Yourself
         </Typography>
         <Typography variant="h6" gutterBottom mb={2}>
-          Define two variables, assign values, choose a comparison operator, and print one based on the condition.
+          Define two variables, assign values, choose a comparison operator, and print one based on
+          the condition.
         </Typography>
         <Paper elevation={2} sx={{ p: 2, maxWidth: 700 }}>
           {/* x =  */}
@@ -113,16 +123,24 @@ else:
           </Box>
           {/* if x > y : */}
           <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
-            <Typography fontWeight="bold">if   </Typography>
-            <GreyTextField value={variable1} onChange={(e) => setVariable1(e.target.value)} />
+            <Typography fontWeight="bold">if </Typography>
+            <GreyTextField value={variable3} onChange={(e) => setVariable3(e.target.value)} />
             {/* <GreyTextField value={operate} onChange={(e) => setOperate(e.target.value)} /> */}
-            <TextField select size="small" value={operate} onChange={(e) => setOperate(e.target.value)} sx={{ width: 80 }}>
-              <MenuItem value=">">&gt;</MenuItem>
+            <TextField
+              select
+              size="small"
+              value={operate}
+              onChange={(e) => setOperate(e.target.value)}
+              sx={{ width: 80 }}
+            >
               <MenuItem value="<">&lt;</MenuItem>
+              <MenuItem value="<=">&le;</MenuItem>
               <MenuItem value="==">==</MenuItem>
               <MenuItem value="!=">!=</MenuItem>
+              <MenuItem value=">">&gt;</MenuItem>
+              <MenuItem value=">=">&ge;</MenuItem>
             </TextField>
-            <GreyTextField value={variable2} onChange={(e) => setVariable2(e.target.value)} />
+            <GreyTextField value={variable4} onChange={(e) => setVariable4(e.target.value)} />
             <Typography fontWeight="bold">:</Typography>
           </Box>
           <Box display="flex" alignItems="center" gap={1} mb={2} ml={4}>
@@ -132,7 +150,7 @@ else:
           </Box>
           {/* else: print("xxx") */}
           <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
-            <Typography fontWeight="bold">else:  </Typography>
+            <Typography fontWeight="bold">else: </Typography>
           </Box>
           <Box display="flex" alignItems="center" gap={1} mb={2} ml={4}>
             <Typography>print( </Typography>

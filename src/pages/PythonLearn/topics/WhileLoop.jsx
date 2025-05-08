@@ -6,7 +6,8 @@ import GreyTextField from './../../../components/ui/GreyTextField';
 import QuizGroup from '../../../components/quiz/QuizGroup';
 
 const WhileLoop = () => {
-  const [variable, setVariable] = useState('');
+  const [variable1, setVariable1] = useState('');
+  const [variable2, setVariable2] = useState('');
   const [number1, setNumber1] = useState('');
   const [number2, setNumber2] = useState('');
   const [number3, setNumber3] = useState('');
@@ -17,10 +18,10 @@ const WhileLoop = () => {
   const [isError, setIsError] = useState(false);
 
   const handleRun = async () => {
-    const code = `${variable} = ${number1}
-while ${variable} ${condition} ${number2}:
+    const code = `${variable1} = ${number1}
+while ${variable2} ${condition} ${number2}:
     print(${printContent})
-    ${variable} ${operate} ${number3}`;
+    ${variable2} ${operate} ${number3}`;
 
     const res = await fetch('http://localhost:8000/api/run/', {
       method: 'POST',
@@ -88,14 +89,14 @@ while i < 5:
         </Typography>
         <Paper elevation={2} sx={{ p: 2, maxWidth: 700 }}>
           <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
-            <GreyTextField value={variable} onChange={(e) => setVariable(e.target.value)} />
+            <GreyTextField value={variable1} onChange={(e) => setVariable1(e.target.value)} />
             <Typography> = </Typography>
             <GreyTextField value={number1} onChange={(e) => setNumber1(e.target.value)} />
           </Box>
 
           <Box display="flex" alignItems="center" gap={1} sx={{ fontSize: '18px', mb: 1 }}>
             <Typography fontWeight="bold">While </Typography>
-            <GreyTextField value={variable} onChange={(e) => setVariable(e.target.value)} />
+            <GreyTextField value={variable2} onChange={(e) => setVariable2(e.target.value)} />
             <TextField select size="small" value={condition} onChange={(e) => setCondition(e.target.value)} sx={{ width: 80 }}>
               <MenuItem value="<">&lt;</MenuItem>
               <MenuItem value="<=">&le;</MenuItem>
@@ -115,7 +116,7 @@ while i < 5:
             <Typography>)</Typography>
           </Box>
           <Box display="flex" alignItems="center" gap={1} mb={2} ml={4}>
-            <GreyTextField value={variable} onChange={(e) => setVariable(e.target.value)} />
+            <GreyTextField value={variable2} onChange={(e) => setVariable2(e.target.value)} />
             {/* <GreyTextField value={operate} onChange={(e) => setOperate(e.target.value)} /> */}
             <TextField select size="small" value={operate} onChange={(e) => setOperate(e.target.value)} sx={{ width: 80 }}>
               <MenuItem value="+=">+=</MenuItem>

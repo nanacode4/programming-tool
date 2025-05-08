@@ -3,6 +3,7 @@ import { Box, Typography, Table, TableBody, TableCell, TableRow, Paper } from '@
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const menuItems = [
   { label: 'Python Introduction', path: 'intro' },
@@ -25,6 +26,7 @@ const menuItems = [
 const PythonLearn = () => {
   const [completedTopics, setCompletedTopics] = useState([]);
   const token = localStorage.getItem('access_token');
+  const navigate = useNavigate();
   axios
     .get('http://localhost:8000/api/learning-path/user_progress/list/', {
       headers: {
@@ -91,28 +93,34 @@ const PythonLearn = () => {
         <Table>
           <TableBody>
             {menuItems.map((item, index) => (
-              <TableRow
-                hover
-                key={index}
-                onClick={() => handleClick(item.path)}
-                sx={{ cursor: 'pointer' }}
-              >
-                <TableCell sx={{ py: 2 }}>
+              <TableRow hover key={index}>
+              <TableCell sx={{ py: 2 }}>
+                <Box
+                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                >
                   <Box
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                    sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                    onClick={() => navigate(`/python/${item.path}`)} 
                   >
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <InsertDriveFileIcon sx={{ color: 'gray', fontSize: 22, mr: 4 }} />
-                      <Typography sx={{ fontSize: '1.5rem', fontWeight: 500 }}>
-                        {item.label}
-                      </Typography>
-                    </Box>
-                    <CheckCircleIcon
-                      sx={{ color: completedTopics.includes(item.path) ? 'green' : 'gray' }}
-                    />
+                    <InsertDriveFileIcon sx={{ color: 'gray', fontSize: 22, mr: 4 }} />
+                    <Typography sx={{ fontSize: '1.5rem', fontWeight: 500 }}>
+                      {item.label}
+                    </Typography>
                   </Box>
-                </TableCell>
-              </TableRow>
+                  <CheckCircleIcon
+                    sx={{
+                      color: completedTopics.includes(item.path) ? 'green' : 'gray',
+                      cursor: 'pointer',
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation(); 
+                      handleClick(item.path);
+                    }}
+                  />
+                </Box>
+              </TableCell>
+            </TableRow>
+            
             ))}
           </TableBody>
         </Table>
