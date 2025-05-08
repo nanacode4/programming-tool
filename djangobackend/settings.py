@@ -42,7 +42,6 @@ INSTALLED_APPS = [
      'rest_framework',
      'corsheaders',
      'code_runner',
-     'dashboard',
      'learning_path',
      'accounts',
      'quiz',
