@@ -162,7 +162,6 @@ def get_wrong_answers(request):
     serializer = WrongAnswerSerializer(wrong_answers, many=True)
     return Response(serializer.data)
 
-# views.py
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
