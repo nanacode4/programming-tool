@@ -1,74 +1,49 @@
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-import json
-from .models import Discuss, Reply
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 
+from .models import Discuss
+from .serializers import DiscussSerializer
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_discussions_with_replies(request):
-    data = []
-
-    for d in Discuss.objects.all().order_by('-time'):
-        replies = Reply.objects.filter(discuss=d).values(
-            'replier', 'content', 'time'
-        )
-
-        data.append({
-            'id': d.id,
-            'title': d.title,
-            'description': d.description,
-            'tags': d.tags,
-            'likes': d.likes,
-            'time': d.time,
-            'username': d.username,
-            'replies': list(replies),
-        })
-
-    return JsonResponse(data, safe=False)
+    discussions = Discuss.objects.all().order_by('-time')
+    serializer = DiscussSerializer(discussions, many=True)
+    return Response(serializer.data)
 
 
-
-@csrf_exempt
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def add_reply(request, discuss_id):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            replier = data.get('replier')
-            content = data.get('content')
+    serializer = DiscussSerializer(data=request.data)
+    if serializer.is_valid():
 
-            if not replier or not content:
-                return JsonResponse({'error': 'Missing fields'}, status=400)
+        data = serializer.validated_data
+        new_discuss = Discuss.objects.create(
+            title=data['title'],
+            description=data['description'],
+            tags=data.get('tags', []),
+            username=data.get('username', 'Anonymous')
+        )
+        return Response({'message': 'Question posted', 'id': new_discuss.id}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-            try:
-                discuss = Discuss.objects.get(id=discuss_id)
-            except Discuss.DoesNotExist:
-                return JsonResponse({'error': 'Discussion not found'}, status=404)
 
-            Reply.objects.create(discuss=discuss, replier=replier, content=content)
-            return JsonResponse({'message': 'Reply added successfully'})
-        except Exception as e:
-            return JsonResponse({'error': f'Server error: {str(e)}'}, status=500)
-
-    return JsonResponse({'error': 'Only POST allowed'}, status=405)
-
-@csrf_exempt
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_discussion(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            title = data.get('title')
-            description = data.get('description')
-            tags = data.get('tags', [])
-            username = data.get('username', 'Anonymous')
+    serializer = DiscussSerializer(data=request.data)
+    if serializer.is_valid():
 
-            if not title or not description:
-                return JsonResponse({'error': 'Missing title or description'}, status=400)
-
-            new_discuss = Discuss.objects.create(
-                title=title,
-                description=description,
-                tags=tags,
-                username=username
-            )
-
-            return JsonResponse({'message': 'Question posted', 'id': new_discuss.id})
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+        data = serializer.validated_data
+        new_discuss = Discuss.objects.create(
+            title=data['title'],
+            description=data['description'],
+            tags=data.get('tags', []),
+            username=data.get('username', 'Anonymous')
+        )
+        return Response({'message': 'Question posted', 'id': new_discuss.id}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
