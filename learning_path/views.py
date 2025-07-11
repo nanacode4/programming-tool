@@ -1,8 +1,8 @@
-from .models import UserCourseProgress
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from .models import UserCourseProgress
+from .serializers import UserCourseProgressSerializer
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -14,8 +14,9 @@ def mark_topic_complete(request):
     if not topic or not course:
         return Response({'error': 'Missing topic or course'}, status=400)
 
-    UserCourseProgress.objects.get_or_create(user=user, topic=topic, course=course)
-    return Response({'message': 'Progress saved successfully'})
+    progress, created = UserCourseProgress.objects.get_or_create(user=user, topic=topic, course=course)
+    serializer = UserCourseProgressSerializer(progress)
+    return Response({'message': 'Progress saved successfully', 'data': serializer.data})
 
 
 @api_view(['GET'])
@@ -40,8 +41,8 @@ def get_course_progress(request):
 def get_user_topics(request):
     user = request.user
     topics = UserCourseProgress.objects.filter(user=user, course='Python')
-
-    return Response([{'topic': t.topic} for t in topics])
+    serializer = UserCourseProgressSerializer(topics, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['DELETE'])
