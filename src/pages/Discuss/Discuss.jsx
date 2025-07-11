@@ -11,7 +11,12 @@ const Discuss = () => {
   const [discussions, setDiscussions] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/discuss/all/')
+    const token = localStorage.getItem('access_token');
+    fetch('http://localhost:8000/api/discuss/all/', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then((res) => res.json())
       .then((data) => setDiscussions(data));
   }, []);
