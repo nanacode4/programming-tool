@@ -12,3 +12,5 @@ class DiscussSerializer(serializers.ModelSerializer):
     class Meta:
         model = Discuss
         fields = ['id', 'title', 'description', 'tags', 'likes', 'time', 'username', 'replies']
+
+
