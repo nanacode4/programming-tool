@@ -25,7 +25,6 @@ It provides an interactive interface for learning multiple programming languages
 ![Home](https://github.com/nanacode4/programming-tool/blob/main/image/homee.png)
 
 ### 🔐 Login
-![Login](https://github.com/nanacode4/programming-tool/blob/main/image/login.png)
 <img src="https://github.com/nanacode4/programming-tool/blob/main/image/login.png" alt="Login" width="400"/>
 
 ### 💻 Coding Page & AI Assistant
@@ -34,8 +33,7 @@ It provides an interactive interface for learning multiple programming languages
 
 ### 📚 Dashboard
 ![Dashboard](https://github.com/nanacode4/programming-tool/blob/main/image/dashboard.png)
-### 📊 Progress Page
-![Progress](https://github.com/nanacode4/programming-tool/blob/main/image/progress.png)
+
 
 ### 🐍 Python Course Introduction
 ![Python Intro](https://github.com/nanacode4/programming-tool/blob/main/image/python1.png)
@@ -43,12 +41,12 @@ It provides an interactive interface for learning multiple programming languages
 ### 📑 Python Course Content
 ![Python Lessons](https://github.com/nanacode4/programming-tool/blob/main/image/pythonpage.png)
 
+### 📊 Progress Page
+![Progress](https://github.com/nanacode4/programming-tool/blob/main/image/progress.png)
+
 
 
 ## 💬 Discussion Module
-
-### Ask a Question
-![Ask Question](https://github.com/nanacode4/programming-tool/blob/main/image/askQuestion.png)
 
 ### Discussion List
 ![Discussions](https://github.com/nanacode4/programming-tool/blob/main/image/discuss.png)
@@ -56,7 +54,11 @@ It provides an interactive interface for learning multiple programming languages
 ### Discussion Detail & Replies
 ![Discussion Detail](https://github.com/nanacode4/programming-tool/blob/main/image/discuss2.png)
 
----
+### Ask a Question
+<img src="https://github.com/nanacode4/programming-tool/blob/main/image/askQuestion.png" alt="Login" width="400"/>
+
+
+
 
 ## 🧩 Quiz Module
 
@@ -68,4 +70,5 @@ It provides an interactive interface for learning multiple programming languages
 ![All Quizzes](https://github.com/nanacode4/programming-tool/blob/main/image/quizlist.png)
 
 ### Quiz Review (Wrong Answers Practice)
-![Quiz Review](https://github.com/nanacode4/programming-tool/blob/main/image/quizReview.png)
+<img src="https://github.com/nanacode4/programming-tool/blob/main/image/quizReview.png" alt="Login" width="500"/>
+
