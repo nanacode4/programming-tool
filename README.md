@@ -55,7 +55,7 @@ It provides an interactive interface for learning multiple programming languages
 ![Discussion Detail](https://github.com/nanacode4/programming-tool/blob/main/image/discuss2.png)
 
 ### Ask a Question
-<img src="https://github.com/nanacode4/programming-tool/blob/main/image/askQuestion.png" alt="Login" width="400"/>
+<img src="https://github.com/nanacode4/programming-tool/blob/main/image/askQuestion.png" alt="Login" width="500"/>
 
 
 
