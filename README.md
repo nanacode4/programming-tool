@@ -1,22 +1,75 @@
-# Getting Started with Create React App
+# 🎓 Programming Tool - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the **frontend** of the Programming Learning Platform, built with **React** and **Material UI**.  
+It provides an interactive interface for learning multiple programming languages, taking quizzes, tracking progress, and using an integrated AI code assistant.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+- 🔑 **User Authentication**: Register and login to access the platform.  
+- 📚 **Course Dashboard**: Browse and start tutorials in Python, Java, C++, JavaScript, SQL, React, HTML, and more.  
+- 💻 **Coding Page**: Write and run code in real time, with integrated output display.  
+- 🤖 **AI Code Assistant**: Ask coding questions and receive instant answers with code examples.  
+- 🧩 **Quizzes & Review**: Test your knowledge and review wrong answers for practice.  
+- 📊 **Progress Tracking**: Track learning progress for each course and mark completed topics.  
+- 💬 **Discussion Forum**: Participate in Q&A style discussions with other learners.  
+- 📝 **Feedback**: Submit feedback to improve the learning experience.  
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
 
+## 📷 Screenshots
+
+### 🏠 Home Page
+![Home](https://github.com/nanacode4/programming-tool/blob/main/image/homee.png)
+
+### 📚 Dashboard
+![Dashboard](https://github.com/nanacode4/programming-tool/blob/main/image/dashboard.png)
+
+### 💻 Coding Page & AI Assistant
+![Coding](https://github.com/nanacode4/programming-tool/blob/main/image/coding2.png)
+
+### 🔐 Login
+![Login](https://github.com/nanacode4/programming-tool/blob/main/image/login.png)
+
+### 📊 Progress Page
+![Progress](https://github.com/nanacode4/programming-tool/blob/main/image/progress.png)
+
+### 🐍 Python Course Introduction
+![Python Intro](https://github.com/nanacode4/programming-tool/blob/main/image/python1.png)
+
+### 📑 Python Course Content
+![Python Lessons](https://github.com/nanacode4/programming-tool/blob/main/image/pythonpage.png)
+
+---
+
+## 💬 Discussion Module
+
+### Ask a Question
+![Ask Question](https://github.com/nanacode4/programming-tool/blob/main/image/askQuestion.png)
+
+### Discussion List
+![Discussions](https://github.com/nanacode4/programming-tool/blob/main/image/discuss.png)
+
+### Discussion Detail & Replies
+![Discussion Detail](https://github.com/nanacode4/programming-tool/blob/main/image/discuss2.png)
+
+---
+
+## 🧩 Quiz Module
+
+### Add New Quiz (Multiple Choice)
+![Add Quiz - Multiple](https://github.com/nanacode4/programming-tool/blob/main/image/q1.png)
+
+### Add New Quiz (Fill in the Blank)
+![Add Quiz - Fill](https://github.com/nanacode4/programming-tool/blob/main/image/q2.png)
+
+### Add New Quiz (Drag and Drop)
+![Add Quiz - Drag](https://github.com/nanacode4/programming-tool/blob/main/image/q3.png)
+
+### All Quizzes List
+![All Quizzes](https://github.com/nanacode4/programming-tool/blob/main/image/quizlist.png)
+
+### Quiz Review (Wrong Answers Practice)
+![Quiz Review](https://github.com/nanacode4/programming-tool/blob/main/image/quizReview.png)
