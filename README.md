@@ -3,7 +3,7 @@
 This is the **frontend** of the Programming Learning Platform, built with **React** and **Material UI**.  
 It provides an interactive interface for learning multiple programming languages, taking quizzes, tracking progress, and using an integrated AI code assistant.
 
----
+
 
 ## 🚀 Features
 
@@ -16,7 +16,7 @@ It provides an interactive interface for learning multiple programming languages
 - 💬 **Discussion Forum**: Participate in Q&A style discussions with other learners.  
 - 📝 **Feedback**: Submit feedback to improve the learning experience.  
 
----
+
 
 
 ## 📷 Screenshots
@@ -24,15 +24,16 @@ It provides an interactive interface for learning multiple programming languages
 ### 🏠 Home Page
 ![Home](https://github.com/nanacode4/programming-tool/blob/main/image/homee.png)
 
-### 📚 Dashboard
-![Dashboard](https://github.com/nanacode4/programming-tool/blob/main/image/dashboard.png)
+### 🔐 Login
+![Login](https://github.com/nanacode4/programming-tool/blob/main/image/login.png)
+<img src="https://github.com/nanacode4/programming-tool/blob/main/image/login.png" alt="Login" width="400"/>
 
 ### 💻 Coding Page & AI Assistant
 ![Coding](https://github.com/nanacode4/programming-tool/blob/main/image/coding2.png)
 
-### 🔐 Login
-![Login](https://github.com/nanacode4/programming-tool/blob/main/image/login.png)
 
+### 📚 Dashboard
+![Dashboard](https://github.com/nanacode4/programming-tool/blob/main/image/dashboard.png)
 ### 📊 Progress Page
 ![Progress](https://github.com/nanacode4/programming-tool/blob/main/image/progress.png)
 
@@ -42,7 +43,7 @@ It provides an interactive interface for learning multiple programming languages
 ### 📑 Python Course Content
 ![Python Lessons](https://github.com/nanacode4/programming-tool/blob/main/image/pythonpage.png)
 
----
+
 
 ## 💬 Discussion Module
 
@@ -59,14 +60,9 @@ It provides an interactive interface for learning multiple programming languages
 
 ## 🧩 Quiz Module
 
-### Add New Quiz (Multiple Choice)
-![Add Quiz - Multiple](https://github.com/nanacode4/programming-tool/blob/main/image/q1.png)
-
-### Add New Quiz (Fill in the Blank)
-![Add Quiz - Fill](https://github.com/nanacode4/programming-tool/blob/main/image/q2.png)
-
-### Add New Quiz (Drag and Drop)
-![Add Quiz - Drag](https://github.com/nanacode4/programming-tool/blob/main/image/q3.png)
+| Add Quiz - Multiple | Add Quiz - Fill | Add Quiz - Drag |
+|----------------------|-----------------|-----------------|
+| <img src="https://github.com/nanacode4/programming-tool/blob/main/image/q1.png" width="250"/> | <img src="https://github.com/nanacode4/programming-tool/blob/main/image/q2.png" width="250"/> | <img src="https://github.com/nanacode4/programming-tool/blob/main/image/q3.png" width="250"/> |
 
 ### All Quizzes List
 ![All Quizzes](https://github.com/nanacode4/programming-tool/blob/main/image/quizlist.png)
